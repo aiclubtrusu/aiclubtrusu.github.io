@@ -1,1 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 1: ConstraintLayout vs. LinearLayout — Research Coach</title>
+    <meta name="description"
+        content="Step-by-step research methodology guide for comparing ConstraintLayout and LinearLayout performance in Android.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                        serif: ['DM Serif Display', 'serif'],
+                    },
+                    colors: {
+                        tru: {
+                            primary: '#003C5C',
+                            'primary-light': '#0A5A7C',
+                            secondary: '#00594C',
+                            'secondary-light': '#007A68',
+                            accent: '#E8963E',
+                            'accent-light': '#F0AE6A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- ===== HERO ===== -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background: rgba(255,255,255,0.2);">1</span>
+                <span class="category-badge badge-performance"
+                    style="background: rgba(255,255,255,0.15); color: #fff;">Performance</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Layout Performance Comparison:<br>ConstraintLayout vs. LinearLayout
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Discover which layout manager performs best in different scenarios. You'll build test layouts, measure
+                rendering speed, and learn to use Android's profiling tools — all explained step by step.
+            </p>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar Navigation -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color: var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="flex-1 min-w-0">
+
+                <!-- ===================== SECTION: OVERVIEW ===================== -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        In this research topic, you will explore one of the most fundamental decisions Android
+                        developers face: <strong>which layout manager to use</strong> when building user interfaces.
+                        Android offers several layout options, but two of the most common are
+                        <strong>ConstraintLayout</strong> and <strong>LinearLayout</strong>.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Your goal is to <em>compare</em> these two layouts by building identical screens using each one,
+                        then measuring how they perform. Think of yourself as a scientist running experiments — you'll
+                        control the variables, take measurements, and draw conclusions.
+                    </p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div>
+                            <strong>What you're NOT expected to do:</strong> You don't need to invent a new layout
+                            system or build a complete app. Instead, focus on understanding the trade-offs between these
+                            two approaches by reading existing research and running simple experiments in Android
+                            Studio.
+                        </div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>Performance benchmarks comparing the two layout approaches</li>
+                        <li>Visual diagrams of layout hierarchies (how deeply nested each approach gets)</li>
+                        <li>Use-case recommendations: when to use which layout</li>
+                        <li>Examples of layout hierarchy efficiency from your experiments</li>
+                    </ul>
+                </section>
+
+                <!-- ===================== SECTION: BACKGROUND READING ===================== -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Before starting your experiments, spend time reading these resources. Don't worry if some parts
+                        seem complex — focus on the main ideas and take notes on what you find interesting.
+                    </p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color: var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Android Documentation
+                            </h4>
+                            <p class="text-sm text-gray-500 mb-2">Start here — this is Google's own guide to building
+                                layouts.</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/develop/ui/views/layout/constraint-layout"
+                                        class="text-tru-secondary hover:underline" target="_blank">ConstraintLayout
+                                        Guide</a> — Learn the basics of ConstraintLayout</li>
+                                <li><a href="https://developer.android.com/develop/ui/views/layout/linear"
+                                        class="text-tru-secondary hover:underline" target="_blank">LinearLayout
+                                        Guide</a> — Understand how LinearLayout works</li>
+                                <li><a href="https://developer.android.com/topic/performance/rendering/optimizing-view-hierarchies"
+                                        class="text-tru-secondary hover:underline" target="_blank">Optimizing View
+                                        Hierarchies</a> — Google's advice on layout performance</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color: var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📝 Blog Articles & Research</h4>
+                            <p class="text-sm text-gray-500 mb-2">These are more approachable — great for understanding
+                                real-world trade-offs.</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search for: <em>"ConstraintLayout vs LinearLayout performance Medium"</em> — You'll
+                                    find several developer blog posts comparing the two</li>
+                                <li>Google's Android Developers Blog has posts about ConstraintLayout optimizations</li>
+                                <li>Stack Overflow discussions on layout performance are very helpful</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div>
+                                <strong>Research Tip:</strong> When reading, keep a simple note with three columns:
+                                <em>Source</em>, <em>Key Finding</em>, and <em>Useful for Poster?</em> This will help
+                                you organize your reading and save time later.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: KEY CONCEPTS ===================== -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts You Need to Understand</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Before diving into experiments, make sure you understand these terms. They'll appear in your
+                        research and on your poster.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">View Hierarchy</h4>
+                            <p class="text-sm text-gray-600">Think of this like a family tree. Every piece of your UI
+                                (buttons, text, images) sits inside containers (layouts). The more containers you nest
+                                inside each other, the <em>deeper</em> the hierarchy — and the harder the phone has to
+                                work to draw it all.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Nesting Depth</h4>
+                            <p class="text-sm text-gray-600">How many layers deep your layouts go. LinearLayout often
+                                requires nesting to create complex designs. ConstraintLayout can usually achieve the
+                                same design with a <em>flat</em> (single-layer) structure.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Measure &amp; Layout Pass</h4>
+                            <p class="text-sm text-gray-600">When Android draws your screen, it goes through two steps:
+                                <strong>Measure</strong> (figuring out how big things are) and <strong>Layout</strong>
+                                (figuring out where things go). Deep nesting means Android does this many times → slow
+                                performance.
+                            </p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Double Taxation</h4>
+                            <p class="text-sm text-gray-600">A term Google uses. When you use <code
+                                    class="bg-white px-1 rounded text-xs">layout_weight</code> in LinearLayout, Android
+                                has to measure the view <em>twice</em>. Nested weighted LinearLayouts cause
+                                <strong>exponential</strong> measurement passes. This is bad for performance!
+                            </p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Layout Inspector</h4>
+                            <p class="text-sm text-gray-600">A tool built into Android Studio that lets you visually
+                                explore your app's view hierarchy while it's running. You can see exactly how deep your
+                                nesting goes, how many views exist, and which views are visible.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Overdraw</h4>
+                            <p class="text-sm text-gray-600">When the phone draws the same pixel more than once.
+                                Overlapping views cause overdraw. You can visualize this in Android Studio with the
+                                <em>"Debug GPU Overdraw"</em> option in Developer Settings.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: METHODOLOGY ===================== -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">
+                        Follow these steps in order. Each step builds on the previous one. Don't rush — take screenshots
+                        at every stage, you'll need them for your poster!
+                    </p>
+
+                    <!-- PHASE 1 -->
+                    <h3>Phase 1: Setting Up Your Test Project</h3>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create a New Android Studio Project</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    Open Android Studio and create a new project. Choose <strong>"Empty Views
+                                        Activity"</strong> as your template. Name it something like <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">LayoutBenchmark</code>.
+                                </p>
+                                <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                    <li>Minimum SDK: API 24 (Android 7.0) – this gives you access to frame metrics</li>
+                                    <li>Language: Java or Kotlin (Kotlin preferred, but use what you're comfortable
+                                        with)</li>
+                                    <li>Build configuration: Kotlin DSL (default is fine)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Design Your Test Layout — A "Contact Card"
+                                    Screen</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    You'll build the <em>same UI</em> using both LinearLayout and ConstraintLayout. A
+                                    good test screen is a "Contact Card" that has:
+                                </p>
+                                <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                    <li>A profile image at the top</li>
+                                    <li>Name and title text below the image</li>
+                                    <li>Three information rows (email, phone, address) each with an icon + text</li>
+                                    <li>Two buttons at the bottom (Call, Message) side by side</li>
+                                </ul>
+                                <p class="text-sm text-gray-500 mt-3 italic">This design is complex enough to show
+                                    meaningful differences but simple enough to implement.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Build the LinearLayout Version</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    Create a file called <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">activity_linear.xml</code> in
+                                    your <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">res/layout</code> folder.
+                                    Here's a starter structure:
+                                </p>
+                                <div class="code-block">
+                                    <span class="code-label">XML</span>
+                                    <pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"&gt;
+
+    &lt;!-- Profile Image --&gt;
+    &lt;ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_launcher_foreground" /&gt;
+
+    &lt;!-- Name - needs its own LinearLayout for centering --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="8dp"&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jane Doe"
+            android:textSize="22sp"
+            android:textStyle="bold" /&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Software Developer"
+            android:textSize="14sp" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Info Row: Email (icon + text) --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"&gt;
+
+        &lt;ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_dialog_email" /&gt;
+
+        &lt;TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="jane@example.com" /&gt;
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Repeat similar rows for Phone &amp; Address... --&gt;
+
+    &lt;!-- Buttons at the bottom --&gt;
+    &lt;LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"&gt;
+
+        &lt;Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Call" /&gt;
+
+        &lt;Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Message" /&gt;
+    &lt;/LinearLayout&gt;
+
+&lt;/LinearLayout&gt;</pre>
+                                </div>
+                                <div class="callout callout-info">
+                                    <div class="callout-icon">👀</div>
+                                    <div><strong>Notice the nesting!</strong> To build this relatively simple screen
+                                        with LinearLayout, we already need <strong>4 levels of nesting</strong> (outer →
+                                        name area → info rows → buttons). Count the levels — this is important data for
+                                        your poster!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Build the ConstraintLayout Version</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    Create <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">activity_constraint.xml</code>.
+                                    The same UI, but flat:
+                                </p>
+                                <div class="code-block">
+                                    <span class="code-label">XML</span>
+                                    <pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"&gt;
+
+    &lt;ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_launcher_foreground"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" /&gt;
+
+    &lt;TextView
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jane Doe"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" /&gt;
+
+    &lt;!-- All other views constrained directly
+         to the root — NO nesting needed! --&gt;
+
+    &lt;Button
+        android:id="@+id/btnCall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Call"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnMessage"
+        android:layout_marginEnd="4dp" /&gt;
+
+    &lt;Button
+        android:id="@+id/btnMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Message"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnCall"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="4dp" /&gt;
+
+&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</pre>
+                                </div>
+                                <div class="callout callout-tip">
+                                    <div class="callout-icon">🎯</div>
+                                    <div><strong>Key Observation:</strong> The ConstraintLayout version has <strong>only
+                                            1 level of nesting</strong> — everything is a direct child of the root. This
+                                        is the "flat hierarchy" advantage you'll highlight in your poster!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHASE 2 -->
+                    <h3>Phase 2: Measuring Performance</h3>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Use Layout Inspector to Visualize the
+                                    Hierarchy</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    The Layout Inspector is your best friend for this research. Here's exactly how to
+                                    find and use it:
+                                </p>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Run your app on the emulator or a physical device</li>
+                                    <li>In Android Studio, go to the menu bar: <strong>Tools → Layout Inspector</strong>
+                                    </li>
+                                    <li>Select your running app process from the dropdown</li>
+                                    <li>You'll see a 3D-style view of your layout hierarchy</li>
+                                    <li>On the right side, you can see the <strong>Component Tree</strong> — this shows
+                                        every view and how deeply it's nested</li>
+                                </ol>
+
+                                <div class="callout callout-warning mt-3">
+                                    <div class="callout-icon">📸</div>
+                                    <div><strong>Take screenshots!</strong> Screenshot both the 3D layout view and the
+                                        Component Tree for each layout version. These make excellent poster visuals that
+                                        immediately show the difference in hierarchy depth.</div>
+                                </div>
+
+                                <h5 class="font-semibold text-gray-700 mt-4 mb-2">What to Record:</h5>
+                                <table class="comparison-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th>LinearLayout</th>
+                                            <th>ConstraintLayout</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Total View Count</td>
+                                            <td><em>(fill in)</em></td>
+                                            <td><em>(fill in)</em></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maximum Nesting Depth</td>
+                                            <td><em>(fill in)</em></td>
+                                            <td><em>(fill in)</em></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Number of ViewGroup containers</td>
+                                            <td><em>(fill in)</em></td>
+                                            <td><em>(fill in)</em></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">6</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Measure Rendering Time with Code</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    You can measure how long it takes Android to inflate (create) each layout. Add this
+                                    code to your Activity:
+                                </p>
+                                <div class="code-block">
+                                    <span class="code-label">Kotlin</span>
+                                    <pre>// In your Activity's onCreate method:
+val startTime = System.nanoTime()
+
+// Inflate the layout
+setContentView(R.layout.activity_linear)
+// OR: setContentView(R.layout.activity_constraint)
+
+val endTime = System.nanoTime()
+val durationMs = (endTime - startTime) / 1_000_000.0
+
+Log.d("LayoutBenchmark", "Inflation time: $durationMs ms")</pre>
+                                </div>
+
+                                <p class="text-sm text-gray-600 mt-3 mb-2"><strong>Where to see the results:</strong>
+                                </p>
+                                <ol class="text-sm text-gray-600 space-y-1 ml-4 list-decimal">
+                                    <li>Open the <strong>Logcat</strong> panel at the bottom of Android Studio</li>
+                                    <li>In the search/filter box, type <code
+                                            class="bg-gray-100 px-2 py-0.5 rounded text-xs">LayoutBenchmark</code></li>
+                                    <li>You'll see the inflation time printed each time the Activity starts</li>
+                                    <li>Run each layout version <strong>at least 5 times</strong> and record the average
+                                    </li>
+                                </ol>
+
+                                <div class="callout callout-tip mt-3">
+                                    <div class="callout-icon">📊</div>
+                                    <div><strong>Pro tip:</strong> Create a simple spreadsheet (Google Sheets works
+                                        great) to record your timing data. Calculate the <em>average</em> and
+                                        <em>standard deviation</em> — this looks very professional on your poster!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">7</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Enable GPU Overdraw Visualization</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    Overdraw shows where the phone is drawing pixels more than once. Here's how to turn
+                                    it on:
+                                </p>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>On your emulator or device, go to <strong>Settings → System → Developer
+                                            Options</strong>
+                                        <ul class="ml-4 mt-1 list-disc text-gray-500">
+                                            <li>If you don't see Developer Options: Go to <strong>Settings → About
+                                                    Phone</strong> and tap <strong>"Build number"</strong> seven times
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Scroll down to <strong>"Debug GPU overdraw"</strong></li>
+                                    <li>Select <strong>"Show overdraw areas"</strong></li>
+                                    <li>Your screen will now show colored overlays:
+                                        <ul class="ml-4 mt-1 list-disc">
+                                            <li><span class="font-semibold" style="color: #2196F3;">Blue</span> = drawn
+                                                once (good!)</li>
+                                            <li><span class="font-semibold" style="color: #4CAF50;">Green</span> = drawn
+                                                twice (okay)</li>
+                                            <li><span class="font-semibold" style="color: #FF9800;">Pink/Orange</span> =
+                                                drawn three times (not great)</li>
+                                            <li><span class="font-semibold" style="color: #F44336;">Red</span> = drawn
+                                                four+ times (bad!)</li>
+                                        </ul>
+                                    </li>
+                                    <li>Take screenshots of both layouts with overdraw enabled — compare the colors</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHASE 3 -->
+                    <h3>Phase 3: Adding Complexity</h3>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">8</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Scale Up — Build a More Complex Screen</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    The real differences show up with complex layouts. Try building a more elaborate
+                                    screen, such as a <strong>Settings Page</strong> with:
+                                </p>
+                                <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                    <li>A user profile section at the top</li>
+                                    <li>Multiple setting groups (Account, Notifications, Privacy)</li>
+                                    <li>Each group has a header + 3-4 toggle rows (label + switch)</li>
+                                    <li>A footer with version info</li>
+                                </ul>
+                                <p class="text-sm text-gray-600 mt-3">
+                                    Build this with both LinearLayout (which will require <strong>many nested
+                                        containers</strong>) and ConstraintLayout (which can do it <strong>flat or
+                                        nearly flat</strong>). Then repeat your measurements from Steps 5–7.
+                                </p>
+
+                                <div class="callout callout-experiment mt-3">
+                                    <div class="callout-icon">🔬</div>
+                                    <div><strong>Experiment idea:</strong> Create 3 versions of increasing complexity
+                                        (simple, medium, complex) and graph the performance difference. This creates a
+                                        compelling visual showing that the gap <em>widens</em> as complexity increases.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: EXPERIMENTS ===================== -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Here are several experiments you can run. You don't have to do all of them — pick 2-3 that
+                        interest you the most.
+                    </p>
+
+                    <div class="space-y-4">
+                        <!-- Experiment 1 -->
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color: #E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">Inflation Time Comparison</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Which layout inflates
+                                faster?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Use <code
+                                    class="bg-gray-100 px-1 rounded text-xs">System.nanoTime()</code> before and after
+                                <code class="bg-gray-100 px-1 rounded text-xs">setContentView()</code>. Run 10 times for
+                                each layout. Calculate average.
+                            </p>
+                            <p class="text-sm text-gray-600"><strong>Expected finding:</strong> For simple layouts, they
+                                may be similar. For complex layouts, ConstraintLayout should be faster because it avoids
+                                nested measurement passes.</p>
+                        </div>
+
+                        <!-- Experiment 2 -->
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color: #E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">View Count &amp; Nesting Depth Analysis</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How many more views does
+                                LinearLayout need?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Use Layout Inspector to count
+                                total views and maximum depth for both versions of the same screen.</p>
+                            <p class="text-sm text-gray-600"><strong>Poster visual:</strong> Create a side-by-side
+                                diagram showing the hierarchy tree for each layout. This single visual can be the
+                                centerpiece of your poster.</p>
+                        </div>
+
+                        <!-- Experiment 3 -->
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color: #F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Weight-Based Layout "Double Taxation" Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How bad is the performance
+                                hit from using <code class="bg-gray-100 px-1 rounded text-xs">layout_weight</code>?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Build a layout grid using
+                                weighted LinearLayouts (3 rows × 3 columns with weights). Build the same grid using
+                                ConstraintLayout's <code class="bg-gray-100 px-1 rounded text-xs">Guideline</code> and
+                                <code class="bg-gray-100 px-1 rounded text-xs">Chain</code> features. Compare inflation
+                                times.
+                            </p>
+                            <p class="text-sm text-gray-600"><strong>Why this matters:</strong> Weighted LinearLayouts
+                                cause <em>double taxation</em> — Android measures the layout twice. Nesting them creates
+                                exponential measurement passes (2² = 4, 2³ = 8, etc.).</p>
+                        </div>
+
+                        <!-- Experiment 4 -->
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color: #FFF3E0;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold text-sm">D</span>
+                                <h4 class="font-semibold text-gray-800">Overdraw Comparison</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does the layout type affect
+                                GPU overdraw?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Enable GPU overdraw
+                                visualization (Step 7) and screenshot both layouts. Categorize the percentage of screen
+                                in each overdraw color.</p>
+                            <p class="text-sm text-gray-600"><strong>Poster visual:</strong> Side-by-side screenshots
+                                with overdraw colors are very visually striking and easy for viewers to understand.</p>
+                        </div>
+
+                        <!-- Experiment 5 -->
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color: #FCE4EC;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-pink-100 text-pink-700 font-bold text-sm">E</span>
+                                <h4 class="font-semibold text-gray-800">Code Complexity Comparison</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Which layout is easier to
+                                write and maintain?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Count lines of XML for each
+                                version. Count the number of attributes. Subjectively rate how easy each was to
+                                understand and modify.</p>
+                            <p class="text-sm text-gray-600"><strong>Note:</strong> This is a "softer" experiment but
+                                still valuable research. Real developers care about maintainability!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: ALTERNATIVE APPROACHES ===================== -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        If you want to go deeper, or if your group wants to split the work, here are alternative methods
+                        you can explore.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color: var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Option 1: Use Android Profiler (CPU
+                                Profiler)</h4>
+                            <p class="text-sm text-gray-600 mb-2">Instead of manual timing, use Android Studio's
+                                built-in Profiler:</p>
+                            <ol class="text-sm text-gray-600 space-y-1 ml-4 list-decimal">
+                                <li>Go to <strong>View → Tool Windows → Profiler</strong> in Android Studio</li>
+                                <li>Click the <strong>"+"</strong> button and select your running app</li>
+                                <li>Click on the <strong>CPU</strong> row to expand it</li>
+                                <li>Record a trace while your Activity loads</li>
+                                <li>Look for methods like <code
+                                        class="bg-gray-100 px-1 rounded text-xs">onMeasure()</code> and <code
+                                        class="bg-gray-100 px-1 rounded text-xs">onLayout()</code> — compare the time
+                                    spent</li>
+                            </ol>
+                            <p class="text-sm text-gray-500 mt-2 italic">This is more advanced but gives very
+                                professional-looking data for your poster.</p>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color: var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Option 2: Survey-Based Approach</h4>
+                            <p class="text-sm text-gray-600 mb-2">Instead of just performance metrics, survey
+                                classmates:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Show them both XML files side-by-side</li>
+                                <li>Ask: "Which is easier to read?", "Which would you prefer to maintain?"</li>
+                                <li>Combine survey results with performance data for a stronger poster</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color: var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Option 3: Literature Review Focus</h4>
+                            <p class="text-sm text-gray-600 mb-2">If running experiments is challenging, you can focus
+                                on a <em>literature review</em>:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Find 5-8 blog posts, articles, or official documentation comparing these layouts
+                                </li>
+                                <li>Summarize the key findings from each source</li>
+                                <li>Create a comparison table with findings across all sources</li>
+                                <li>Add your own simple experiment (even just Step 5) to validate one finding</li>
+                            </ul>
+                            <div class="callout callout-info mt-2">
+                                <div class="callout-icon">💡</div>
+                                <div>This approach is perfectly valid! Research papers often include comprehensive
+                                    literature reviews. Combine it with even one simple experiment for a strong poster.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: POSTER TIPS ===================== -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Must-Have Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Side-by-side hierarchy tree diagrams</li>
+                                <li>Bar chart of inflation times</li>
+                                <li>Overdraw comparison screenshots</li>
+                                <li>Table comparing key metrics</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Suggested Poster Sections</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li><strong>Introduction:</strong> Why layout choice matters</li>
+                                <li><strong>Background:</strong> What each layout does</li>
+                                <li><strong>Methodology:</strong> How you tested</li>
+                                <li><strong>Results:</strong> What you found (with visuals!)</li>
+                                <li><strong>Conclusion:</strong> When to use which</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">💪 What Makes a Strong Poster</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Include <strong>actual data</strong> you collected, even if small</li>
+                                <li>Show your <strong>methodology</strong> — explain how you tested</li>
+                                <li>Cite at least 3-4 sources</li>
+                                <li>Include a clear <strong>recommendation</strong> at the end</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">🚫 Common Poster Mistakes</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Too much text, not enough visuals</li>
+                                <li>No actual data — just restating what articles say</li>
+                                <li>Missing references/citations</li>
+                                <li>Conclusions that aren't supported by your data</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: PITFALLS ===================== -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color: var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"My timing results are
+                                inconsistent every time I run"</summary>
+                            <p class="text-sm text-gray-600 mt-3">This is normal! The first run is always slower (cold
+                                start). Run your test <strong>at least 10 times</strong>, discard the first 2 runs, and
+                                average the rest. Also, close other apps on the emulator to reduce interference. Mention
+                                this in your methodology section — it shows scientific rigor!</p>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color: var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"ConstraintLayout seems harder
+                                to write. Is it really better?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Great observation! ConstraintLayout has a steeper
+                                learning curve, and for <em>very simple</em> layouts it may actually be slightly slower
+                                (more setup overhead). Your research can highlight that <strong>the best choice depends
+                                    on the situation</strong> — this nuanced conclusion is more valuable than "X is
+                                always better."</p>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color: var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"I can't find Layout Inspector
+                                in my Android Studio"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Make sure you're running Android Studio Arctic Fox
+                                (2020.3.1) or newer. Go to <strong>Tools → Layout Inspector</strong>. If it's grayed
+                                out, your app needs to be actively running on a device or emulator first. Also, ensure
+                                you've selected the correct process in the dropdown.</p>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color: var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Do I need to test on a physical
+                                device?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">An emulator is fine for this research! While physical
+                                device results are more accurate, the <em>relative</em> differences between layouts will
+                                be similar on an emulator. If you have access to a physical device, test on both and
+                                mention it in your methodology — that's bonus points!</p>
+                        </details>
+
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color: var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"How much data do I need for a
+                                good poster?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Quality over quantity! If you run <strong>2-3
+                                    experiments</strong> with consistent data, that's enough. One well-done experiment
+                                with a clear visual is better than five poorly-documented ones. Focus on making your
+                                findings clear and your visuals compelling.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- ===================== SECTION: CHECKLIST ===================== -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">
+                        Use this checklist to track your progress. You can print this page or copy it to a Google Doc.
+                    </p>
+
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Read at least 3 background sources and take
+                                    notes</p>
+                                <p class="text-xs text-gray-400">Recommendation: Official docs + 2 blog posts</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create a test project in Android Studio</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Build the same UI with LinearLayout</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Build the same UI with ConstraintLayout</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Use Layout Inspector — take screenshots of
+                                    both hierarchies</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Measure inflation time (at least 5 runs
+                                    each)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Enable and screenshot GPU overdraw for both
+                                </p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Record all data in a spreadsheet</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create comparison charts/graphs</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Write your conclusions and recommendations
+                                </p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Design and complete your poster</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm">
+                <a href="../index.html" class="text-white hover:text-tru-accent transition-colors">← Back to All
+                    Topics</a>
+            </div>
+            <div class="text-sm">
+                COMP 2160 — Mobile Application Development · Thompson Rivers University
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SIDEBAR ACTIVE-STATE JS ===== -->
+    <script>
+        // Sidebar scroll spy
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        sections.forEach(section => observer.observe(section));
+
+        // Smooth scroll for sidebar links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+
+</html>

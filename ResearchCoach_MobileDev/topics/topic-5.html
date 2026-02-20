@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 5: Background vs. Foreground Services — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing Android Background and Foreground services, battery consumption, and OS restrictions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">05</span>
+                <span class="category-badge badge-performance"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Performance</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Background vs. Foreground<br>Services
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Work while the user sleeps. You'll investigate how Android manages tasks that run when the app is
+                closed, measure battery drain, and navigate the strict "rules of engagement" introduced in modern
+                Android versions.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">A <strong>Service</strong> is an app component that
+                        can perform long-running operations in the background. But there's a catch: Google has placed
+                        strict limits on background work to save battery life. Today, if your app wants to do something
+                        important while in the background, it often **must** use a <strong>Foreground Service</strong>.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed mb-4">Your research will explore the power trade-offs of
+                        these two service types. You'll measure battery consumption, experiment with "Background
+                        Execution Limits," and see why Android 14+ makes it harder than ever to run tasks invisibly.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Context:</strong> Foreground services *must* show a notification to the
+                            user. Why? So the user knows which app is currently "eating" their battery!</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>Battery drain data comparing Background vs. Foreground execution</li>
+                        <li>Comparison of "Time to Kill" (how long the OS lets a service live)</li>
+                        <li>Manifest requirements and notification implementation examples</li>
+                        <li>Explanation of modern alternatives like `WorkManager`</li>
+                        <li>Impact of Android's "Doze Mode" on service reliability</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">The rules for services have changed drastically in
+                        recent years. Start here.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Android Documentation
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/guide/components/foreground-services"
+                                        class="text-tru-secondary hover:underline" target="_blank">Foreground Services
+                                        Guide</a> — Rules for visible background work</li>
+                                <li><a href="https://developer.android.com/about/versions/14/changes/fgs-types-required"
+                                        class="text-tru-secondary hover:underline" target="_blank">Android 14 Service
+                                        Changes</a> — New required "Type" declarations</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔋 Battery & Resources</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Android background execution limits history"</em> — From Android 8 to
+                                    14</li>
+                                <li>Search: <em>"Doze mode and App Standby Buckets"</em> — How Android prioritizes apps
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Pay special attention to <strong>WorkManager</strong>.
+                                It's not a "service," but it's Google's recommended way to do most background work.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Background Service</h4>
+                            <p class="text-sm text-gray-600">A service that is invisible to the user. Since Android 8.0,
+                                these are <strong>highly restricted</strong>. If you start one while the app is in the
+                                background, it will likely be killed in seconds.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Foreground Service</h4>
+                            <p class="text-sm text-gray-600">A service that the user is actively aware of. It
+                                <strong>must</strong> display a non-dismissible notification. Because the user can see
+                                it, Android gives it higher priority and lets it live longer.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Service Type</h4>
+                            <p class="text-sm text-gray-600">Starting in Android 14, you must declare <em>why</em> you
+                                need a foreground service (e.g., <code
+                                    class="bg-white px-1 rounded text-xs">location</code>, <code
+                                    class="bg-white px-1 rounded text-xs">microPhone</code>, <code
+                                    class="bg-white px-1 rounded text-xs">dataSync</code>). If you lie, your app might
+                                be banned from the Play Store!</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Doze Mode</h4>
+                            <p class="text-sm text-gray-600">A power-saving state Android enters when the device is
+                                stationary and the screen is off. It shuts down all network and CPU activity for most
+                                apps, except for specific "maintenance windows."</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Explore the limitations of the background by trying to
+                        break the rules.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create a Long-Running Task</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a Service that simply logs a message every
+                                    5 seconds. This will represent our "work."</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>class MyTaskService : Service() {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Thread {
+            while (true) {
+                Log.d("ServiceTest", "Still working at ${System.currentTimeMillis()}")
+                Thread.sleep(5000)
+            }
+        }.start()
+        return START_STICKY
+    }
+}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Test 1: Standard Background Service</h4>
+                                <p class="text-sm text-gray-600 mb-3">Launch the service, then <strong>swipe the app
+                                        away from recent tasks</strong>. Keep your phone connected to Android Studio and
+                                    watch the **Logcat**.</p>
+                                <div class="callout callout-warning">
+                                    <div class="callout-icon">🚨</div>
+                                    <div><strong>Prediction:</strong> On modern Android versions, the logs will stop
+                                        appearing almost immediately. Note down exactly how long it took for the OS to
+                                        kill your service.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Test 2: Transform to Foreground</h4>
+                                <p class="text-sm text-gray-600 mb-3">Add a notification and call <code
+                                        class="bg-gray-100 px-1 rounded text-xs">startForeground()</code>. Repeat the
+                                    same test (swipe away the app).</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>// Inside onStartCommand
+val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+    .setContentTitle("Researching...")
+    .setSmallIcon(R.drawable.ic_launcher)
+    .build()
+
+startForeground(1, notification)</pre>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">Does the service keep logging now? (It should!)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Battery Measurement (Physical Device Only)
+                                </h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Charge your phone to 100% and unplug it</li>
+                                    <li>Run the **Background Service** task for 30 minutes (if it doesn't get killed)
+                                    </li>
+                                    <li>Note battery percentage</li>
+                                    <li>Recharge to 100%, then run the **Foreground Service** for 30 minutes</li>
+                                    <li>Compare the drain. Use **Settings → Battery → Usage** to see the per-app stats.
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">ADB Power Profiling (Advanced)</h4>
+                                <p class="text-sm text-gray-600 mb-2">Use the terminal to get deep battery stats. This
+                                    is the "gold standard" for research data.</p>
+                                <div class="code-block"><span class="code-label">Terminal</span>
+                                    <pre># Reset battery stats
+adb shell dumpsys batterystats --reset
+
+# Run your Foreground service for 15 mins, then dump:
+adb shell dumpsys batterystats > fgs_usage.txt</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#FFF3E0;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">Survival Efficiency</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How long can a background
+                                service realistically live across different API levels?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Test your app on an old device
+                                (Android 7 or lower) and a new device (Android 14). Time how long the logs continue
+                                after the app is closed.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Doze Mode Impact</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Can a Foreground service
+                                actually survive Doze Mode?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Leave your phone perfectly still
+                                on a desk for 2 hours with the screen off and a Foreground Service running. Check the
+                                logs later. Did it stop work during the "Doze" periods?</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">WorkManager vs. Service</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Is `WorkManager` more
+                                battery-efficient than a custom Service for periodic tasks?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Implement a task (e.g., fetching a
+                                JSON file) to run every 15 minutes. Measure 2-hour battery usage for a custom Service
+                                vs. a WorkManager `PeriodicWorkRequest`.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Literature Review: The Evolution of
+                                Restrictions</h4>
+                            <p class="text-sm text-gray-600">If coding complex services is too much, focus on
+                                <strong>Research</strong>. Create a detailed timeline of "Death to Background Work" in
+                                Android: Marshmallow (Doze), Oreo (Background Limits), Android 12 (FGS restrictions),
+                                Android 14 (FGS Types). Analyze WHY each change was made.</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">App Permission Audit</h4>
+                            <p class="text-sm text-gray-600">Look at the "Battery" settings on your own phone. Find 5
+                                apps that use "Unrestricted" background data/battery vs 5 that are "Optimized." Compare
+                                their features — why does Spotify need one while a Calculator doesn't?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Screenshot of the Foreground Service notification</li>
+                                <li>Bar chart: "Time until service killed: BG vs FG"</li>
+                                <li>Diagram of Doze Mode "maintenance windows"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">💡 Strong Recommendation</h4>
+                            <p class="text-sm text-gray-600">Conclude with a flow chart: "Should you use a Service?" →
+                                Is it long (minutes?) → Yes → Can it be deferred? → No → **Use Foreground Service**.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can't I just ignore the
+                                Foreground requirements?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Try it! Start a service in the background on Android
+                                12+. Your app will immediately throw a <code
+                                    class="bg-white px-1 rounded text-xs">ForegroundServiceStartNotAllowedException</code>
+                                and crash. Google is very serious about this!</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"What is a 'Sticky' Service?"
+                            </summary>
+                            <p class="text-sm text-gray-600 mt-3">Returning <code
+                                    class="bg-white px-1 rounded text-xs">START_STICKY</code> tells Android: "If you
+                                have to kill me for memory, please try to restart me once there's more RAM available."
+                                It's helpful, but NOT a guarantee on modern devices.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement a basic logging Service</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Measure how long a background service lives
+                                    after swiping the app</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Convert the service to a Foreground Service
+                                    with a notification</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Verify it still runs after swiping away the
+                                    app</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Collect battery usage stats from Settings
+                                    or ADB</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Research the specific 'Foreground Service
+                                    Types' added in Android 14</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

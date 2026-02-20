@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 6: SharedPreferences vs. Room Database — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing SharedPreferences and Room Database for data storage in Android.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">06</span>
+                <span class="category-badge badge-storage"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Storage</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                SharedPreferences vs. Room:<br>Choosing the Right Storage
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Where should your data live? You'll compare the simplicity of key-value pairs with the power of a
+                relational database. Measure speed, analyze "boilerplate" code, and discover when a database is
+                overkill.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Every app needs to save data. If you only need to save
+                        a user's name or a "Dark Mode" toggle, <strong>SharedPreferences</strong> is easy and fast. But
+                        if you're building a fitness tracker with thousands of logged workouts, you need the structure
+                        and searching power of <strong>Room Database</strong>.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you'll perform a "Stress Test" on
+                        both systems. You'll measure how long it takes to save 1, 100, and 1,000 items, and you'll
+                        analyze the "Boilerplate" (extra code) required to get each one running. Your data will help
+                        other developers decide when to go simple and when to go robust.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Quantify the performance trade-offs between
+                            SharedPreferences and Room when scaling from small datasets to large datasets.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A bar chart showing "Write Time" (ms) for varying numbers of items</li>
+                        <li>A "Code Complexity" comparison (Lines of code to setup)</li>
+                        <li>Recommendations based on data type (Primitive vs. Structured)</li>
+                        <li>Observations on "Searchability" — how easy is it to find one specific item?</li>
+                        <li>Database Inspector screenshots showing your data in the Room table</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Understand the architecture of Android storage before
+                        you start benchmarking.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Android Documentation
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/training/data-storage/shared-preferences"
+                                        class="text-tru-secondary hover:underline" target="_blank">Save data in
+                                        key-value pairs</a> — SharedPreferences guide</li>
+                                <li><a href="https://developer.android.com/training/data-storage/room"
+                                        class="text-tru-secondary hover:underline" target="_blank">Save data in a local
+                                        database using Room</a> — The modern way to use SQLite</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">💾 Storage Comparisons</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"SharedPreferences vs Room performance benchmarks"</em> — See what
+                                    others have found</li>
+                                <li>Search: <em>"Android Jetpack DataStore vs SharedPreferences"</em> — Research the
+                                    newest alternative (Advanced!)</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Read about **"ACID properties"** in databases. This
+                                explains why Room is more reliable for complex data than a simple XML file.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Key-Value Pair</h4>
+                            <p class="text-sm text-gray-600">The simplest way to store data. You give it a Name (Key)
+                                and a Value (e.g., "username" = "John"). It's like a dictionary or a set of sticky
+                                notes.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Relational Database</h4>
+                            <p class="text-sm text-gray-600">A system that organizes data into tables (like Excel
+                                sheets) where rows can be linked to each other. Essential for searching and filtering
+                                large amounts of complex info.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">DAO (Data Access Object)</h4>
+                            <p class="text-sm text-gray-600">A special class in Room where you define your "Queries"
+                                (the questions you ask the database, like "Give me all users older than 20").</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Boilerplate Code</h4>
+                            <p class="text-sm text-gray-600">The "standard" code you have to write just to get a feature
+                                started. Room has a lot of it (Entities, DAOs, Database classes) compared to
+                                SharedPreferences.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Learn to measure storage speed by building a "Bulk
+                        Inserter" for both systems.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Setup the Timing Logic</h4>
+                                <p class="text-sm text-gray-600 mb-2">We'll use <code
+                                        class="bg-gray-100 px-1 rounded text-xs">System.currentTimeMillis()</code> to
+                                    wrap our save operations. This calculates how many milliseconds passed during the
+                                    task.</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>val startTime = System.currentTimeMillis()
+// ... RUN STORAGE OPERATION HERE ...
+val endTime = System.currentTimeMillis()
+Log.d("Benchmark", "Operation took: ${endTime - startTime} ms")</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement SharedPreferences Benchmark</h4>
+                                <p class="text-sm text-gray-600 mb-3">Create a loop that saves 1,000 strings into
+                                    SharedPreferences. **Warning:** Don't forget to use <code
+                                        class="bg-gray-50 px-1 rounded text-xs">apply()</code> or <code
+                                        class="bg-gray-50 px-1 rounded text-xs">commit()</code> inside the loop (though
+                                    <code class="bg-gray-50 px-1 rounded text-xs">commit()</code> is usually slower and
+                                    blocking!).</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>val editor = sharedPrefs.edit()
+for (i in 1..1000) {
+    editor.putString("key_$i", "Some raw data value $i")
+}
+editor.apply()</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement Room Benchmark</h4>
+                                <p class="text-sm text-gray-600 mb-3">Setup a basic Room database with one table
+                                    (`User`). Create a DAO method for <code
+                                        class="bg-gray-100 px-1 rounded text-xs">insertAll(users: List&lt;User&gt;)</code>.
+                                    Measure how long it takes to insert 1,000 objects in a single transaction.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Analyze the "Boilerplate"</h4>
+                                <p class="text-sm text-gray-600 mb-2">Count the lines of code and the number of files
+                                    needed to get Room working versus SharedPreferences. This is a "Qualitative"
+                                    measurement (quality/effort) for your poster.</p>
+                                <div class="callout callout-tip">
+                                    <div class="callout-icon">📊</div>
+                                    <div><strong>Poster Tip:</strong> Create a table showing **Setup Time (Developer)**
+                                        vs **Execution Time (App)**. Room takes longer for the human but is faster for
+                                        the machine with large data!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Visual Audit: Database Inspector</h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>In Android Studio, click **App Inspection** → **Database Inspector**</li>
+                                    <li>Run your app on a physical device or emulator</li>
+                                    <li>Select your app's process</li>
+                                    <li>You can now see your Room data in a live spreadsheet! **Screenshot this!**
+                                        SharedPreferences is much harder to "see" inside the device.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Bulk Stress Test"</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> At what exact number of
+                                items does SharedPreferences start to lag behind Room?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Test with 10, 100, 1000, and 5000
+                                items. Graph the results. You'll likely see Room's "startup cost" is high, but its
+                                "per-item cost" is much lower than SharedPreferences.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Search Efficiency</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How long does it take to
+                                find a specific item in a list of 10,000?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> In SharedPreferences, you have to
+                                read the whole file. In Room, you use a SQL Query. Time the difference between <code
+                                    class="bg-gray-50 px-1 rounded text-xs">getAll()</code> vs <code
+                                    class="bg-gray-50 px-1 rounded text-xs">findByName(query)</code>.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Thread Blocking Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Can SharedPreferences
+                                freeze your app's UI?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Use <code
+                                    class="bg-gray-50 px-1 rounded text-xs">commit()</code> to save a very large amount
+                                of data on the main thread. See if a button animation "jumps" or freezes. Room forces
+                                you to use background threads, preventing this bug!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">The "Data Complexity" Audit</h4>
+                            <p class="text-sm text-gray-600">Instead of measuring speed, focus on
+                                <strong>Structure</strong>. Try to save a complicated object (e.g., a "User" with a list
+                                of "Orders"). Show how much manual work it takes to turn it into a string for
+                                SharedPreferences vs. just saving it as a "Table" in Room.</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Next-Gen: Jetpack DataStore</h4>
+                            <p class="text-sm text-gray-600">Google is replacing SharedPreferences with
+                                <strong>DataStore</strong>. Research why. Can you perform a mini-experiment comparing
+                                SharedPreferences to DataStore instead? This would be very impressive on a poster!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Bar charts for Write/Read times (ms)</li>
+                                <li>Screenshot of the Android Studio Database Inspector</li>
+                                <li>Side-by-side code "snippets" (highlighting how short SharedPrefs is vs how powerful
+                                    Room is)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Your poster should guide a developer. Use a "Decision
+                                Matrix" or "Flowchart" to help them choose. (e.g., "Is your data > 1MB? → Use Room")</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can't I just save a whole
+                                database worth of data in SharedPreferences?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Technically, yes. But SharedPreferences reads the
+                                <strong>entire file</strong> into memory as soon as the app starts. If you save 10MB of
+                                data there, your app's memory usage will spike immediately, potentially causing crashes
+                                (ANRs).</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Why does Room require so many
+                                files?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Room uses a pattern called "Separation of Concerns."
+                                One file defines the data (Entity), one defines the rules (DAO), and one manages the
+                                connection (Database). This makes your app much easier to manage as it grows.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Set up an Android project with Room
+                                    dependencies</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement a basic SharedPreferences
+                                    save/load button</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement a basic Room Database (Entity +
+                                    DAO)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create a "Timer" to measure the speed of
+                                    1000+ inserts</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Capture a screenshot of the Database
+                                    Inspector</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Count the lines of boilerplate code for
+                                    your "Implementation Cost" stat</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

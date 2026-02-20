@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 16: Styles and Themes vs. Inline Styling — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing Styles/Themes and Inline Styling in Android.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">16</span>
+                <span class="category-badge badge-design"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">UI/UX</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Design at Scale:<br>Themes vs. Inline Styling
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                If you have 100 buttons in your app and need to change their color, do you want to edit 100 files or
+                just one? Research the power of "Styles and Themes" to keep your code clean, your design consistent, and
+                your sanity intact.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">In Android, you can style a button in two ways:
+                        **Inline Styling** (writing values like `#FF0000` directly in your layout XML) or **Styles and
+                        Themes** (creating a central rule-book in `res/values/styles.xml`). Beginner developers often
+                        start with inline styling because it's fast, but it quickly leads to "design debt."</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you will conduct a "Scalability
+                        Stress Test." You'll build the same screen twice—once using inline attributes and once using
+                        hierarchical styles. You'll measure the time it takes to perform a "Brand Refresh" (changing
+                        primary colors/fonts) and analyze the code's readability and maintainability.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Quantify the reduction in "Lines of Code" and "Redesign
+                            Time" achieved by switching from Inline Styling to a Theme-based design system.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A "Code Comparison" diff: 1 line of style vs. 15 lines of inline XML</li>
+                        <li>A diagram of **Style Inheritance**: How a "Base" style becomes a "Danger" style</li>
+                        <li>Time-trial results: "Changing 5 colors across 3 layouts" (Minutes vs. Seconds)</li>
+                        <li>A visualization of **Material Design Tokens** (e.g., `?attr/colorPrimary`)</li>
+                        <li>A "Dark Mode" demonstration: How themes make it instant vs. impossible</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Learn the "Centralized Design" philosophy.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 The Android Styling System</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/guide/topics/ui/look-and-feel/themes"
+                                        class="text-tru-secondary hover:underline" target="_blank">Styles and Themes
+                                        Guide</a> — Official documentation</li>
+                                <li><a href="https://material.io/design" class="text-tru-secondary hover:underline"
+                                        target="_blank">Material Design Guidelines</a> — The logic of design systems
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔍 Clean Code Principles</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"DRY principle in Android UI development"</em></li>
+                                <li>Search: <em>"Designing a scalable Android theme for large projects"</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Study <strong>"Theme Attributes"</strong> (using `?`
+                                instead of `@`). It allows your styles to "Listen" to the theme, making them dynamic!
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Style Inheritance</h4>
+                            <p class="text-sm text-gray-600">Creating a "Parent" style (e.g., `BaseButton`) and having
+                                child styles (e.g., `ActionButton`, `CancelButton`) that "Inherit" all its properties
+                                while only changing one or two.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">The Theme Bridge</h4>
+                            <p class="text-sm text-gray-600">A theme is a "Bucket" of styles. If you tell the theme
+                                `buttonStyle = @style/MyStyle`, every button in your app automatically uses it without
+                                you typing a single line in your layout files.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Design Tokens</h4>
+                            <p class="text-sm text-gray-600">Instead of using a color like `Red`, you use a token like
+                                `colorError`. This way, if you want "Error" to be `Orange` tomorrow, you change it
+                                everywhere in one click.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Separation of Concerns</h4>
+                            <p class="text-gray-600 text-sm">Your Layout XML should define <strong>What</strong> is on
+                                the screen (Structure). Your Style XML should define <strong>How</strong> it looks
+                                (Aesthetics).</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Conduct a comparative analysis of styling efficiency.
+                    </p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create the "Chaos" Layout</h4>
+                                <p class="text-sm text-gray-600 mb-2">Build a screen with 5 Buttons and 5 TextViews. For
+                                    every single one, manually set the `textColor`, `textSize`, `padding`, and
+                                    `background`. Feel the pain of typing the same values 10 times.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Refactor into Styles</h4>
+                                <p class="text-sm text-gray-600 mb-2">Identify the patterns. Create a
+                                    <code>&lt;style&gt;</code> entry in <code>themes.xml</code> (or
+                                    <code>styles.xml</code>). Now, replace the inline gunk in your layout with one line:
+                                </p>
+                                <div class="bg-gray-100 p-3 rounded-lg font-mono text-xs text-tru-primary">
+                                    <pre>style="@style/Widget.Custom.Button.Primary"</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Inheritance" Experiment</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a "SmallText" style. Then create a
+                                    "SmallText.Bold" style that extends it. Change the font size in the parent and
+                                    observe if the child updates automatically. **Record this behavior as "Cascading
+                                    Design."**</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Dark Mode" Velocity Challenge</h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Try to implement Dark Mode by changing every inline color. (Time it).</li>
+                                    <li>Now, create a <code>values-night/themes.xml</code> file and just swap the
+                                        primary color values. (Time it).</li>
+                                    <li>Compare the two times. This is your most powerful data point for your poster.
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Analyze "Preview" Accuracy</h4>
+                                <p class="text-sm text-gray-600 mb-2">Does the Android Studio Design Preview render both
+                                    correctly? Sometimes complex styles don't show up correctly in the preview. Note any
+                                    "Friction" you encounter while building with styles.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Brand Refresh" Audit</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How many files do I need to
+                                touch to change the brand font?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Change your app's font across all
+                                screens. Compare a "Hardcoded" app (touching 10+ XML files) to a "Themed" app (touching
+                                1 line in <code>themes.xml</code>). Graph the "Maintenance Effort."</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Layout XML "Slimness" Study</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does styling reduce binary
+                                size or compile time?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Compare the file size of your
+                                <code>activity_main.xml</code> before and after refactoring. Even 5KB makes a difference
+                                in a 1,000-screen app. This is a great research angle on <strong>Code
+                                    Minimalism</strong>.
+                            </p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Theme Attribute Accessibility Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Can themes help with "High
+                                Contrast" modes?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Research how a theme can be
+                                swapped for a "High Contrast" version automatically based on system settings. This
+                                connects **Styling** to **Accessibility**, a very high-value research topic.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Jetpack Compose: The Death of XML</h4>
+                            <p class="text-sm text-gray-600">Modern Android apps are moving to **Jetpack Compose**,
+                                where styling is done in pure Kotlin. Research how <code>MaterialTheme { ... }</code> in
+                                Compose replaces the entire XML styling system. Should we even learn XML styling in
+                                2025?</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Dynamic Theming (Material You)</h4>
+                            <p class="text-sm text-gray-600">Google's new "Material You" picks colors from the user's
+                                wallpaper. Research how to implement this "Dynamic Theming." Does it make manual styling
+                                irrelevant?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>A visual "Tree" showing Style Inheritance</li>
+                                <li>Side-by-side Dark/Light mode screenshots</li>
+                                <li>"Pain Scale": Maintenance effort for Inline vs. Style</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Focus on the word **"Efficiency."** Explain that
+                                professional developers treat Design as a **System**, not as a series of one-off
+                                decisions. Mention the **"DRY" (Don't Repeat Yourself)** principle.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can't I just use copy-paste?"
+                            </summary>
+                            <p class="text-sm text-gray-600 mt-3">Copy-pasting is the enemy of maintenance. If you find
+                                a bug in your layout (like a margin that's 2dp off), you have to fix it in every place
+                                you pasted. With styles, you fix it once.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"What happens if I have both an
+                                Inline Style and a Style applied?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Android follows a **Precedence Rule**. Inline styling
+                                *always* wins over the Style, and the Style wins over the Theme. This is a great
+                                "Gotcha" to mention on your poster!</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="checkbox-container content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Create a layout with at least 5 identical but
+                                hardcoded UI elements</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Extract those common attributes into a single
+                                <code>&lt;style&gt;</code> tag</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Implement "Parent-Child" inheritance for a
+                                special variation of a style</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Test "Dark Mode" implementation using a
+                                secondary theme file</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Measure time taken for a global color change in
+                                both methods</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Document the "Precedence Rule" (Inline vs.
+                                Style vs. Theme)</p>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm">
+                <a href="../index.html" class="text-white hover:text-tru-accent transition-colors">← Back to All
+                    Topics</a>
+            </div>
+            <div class="text-sm">
+                Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -70% 0px'
+        });
+
+        sections.forEach(s => observer.observe(s));
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 9: Network Request Libraries: Volley vs. Retrofit — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing Volley and Retrofit for network requests in Android applications.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">09</span>
+                <span class="category-badge badge-performance"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Performance</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Volley vs. Retrofit:<br>The Speed of Connection
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                How fast can your app talk to the internet? You'll compare two of Android's top networking libraries.
+                Measure latency, analyze memory usage, and discover which one is better for small data vs. large files.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Most Android apps are "shells" for data living on a
+                        server. Whether you're fetching a tweet or downloading a high-res image, the library you choose
+                        for these "HTTP Requests" matters. <strong>Volley</strong> was originally built for speed and
+                        small JSON requests, while <strong>Retrofit</strong> has become the modern standard for its
+                        clean code and powerful extensions.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you will build a "Network Benchmark"
+                        app. You'll fetch the same data using both Volley and Retrofit and measure the
+                        <strong>Latency</strong> (time to return). You'll also analyze which library makes it easier to
+                        handle common networking headaches like timeouts and image caching.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Compare the response times and resource efficiency of
+                            Volley and Retrofit across different data payload sizes.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A line graph showing "Response Time" vs. "Payload Size" (KB to MB)</li>
+                        <li>A "Code Cleanliness" comparison (Lines of code per request)</li>
+                        <li>Observations on **Memory Usage** during large image downloads</li>
+                        <li>Screenshots from the **Android Studio Network Profiler**</li>
+                        <li>A decision guide: "When to use Volley vs. Retrofit"</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Learn the basics of the "Network Stack" before you
+                        start measuring.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Library Documentation</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/training/volley"
+                                        class="text-tru-secondary hover:underline" target="_blank">Transmit network data
+                                        using Volley</a> — Official guide</li>
+                                <li><a href="https://square.github.io/retrofit/"
+                                        class="text-tru-secondary hover:underline" target="_blank">Retrofit: A type-safe
+                                        HTTP client</a> — Square's official documentation</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🏎️ Performance Tools</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/studio/profile/network-profiler"
+                                        class="text-tru-secondary hover:underline" target="_blank">Inspect network
+                                        traffic with Network Profiler</a> — Your main tool for this topic</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Search for <strong>"JSON Parsing performance Gson vs
+                                    Moshi"</strong>. Networking speed often depends on how fast you can turn "Text" into
+                                "Code Objects"!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">HTTP Request & Response</h4>
+                            <p class="text-sm text-gray-600">The "Conversation" your app has with a server. Your app
+                                sends a Request (e.g., "Give me user #5") and the server sends a Response (the data or
+                                an error).</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Latency</h4>
+                            <p class="text-sm text-gray-600">The delay between starting a request and receiving the
+                                first byte of data. Lower latency = snappier app feel.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Request Queueing</h4>
+                            <p class="text-sm text-gray-600">A system (used by Volley) that manages multiple network
+                                requests by putting them in a "Line." This prevents the app from overwhelming the
+                                device's internet connection.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Type-Safe Client</h4>
+                            <p class="text-sm text-gray-600">The core philosophy of Retrofit. It turns your API
+                                endpoints into a Kotlin interface, which reduces errors and makes the code much cleaner.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Learn to benchmark the two libraries using a standard
+                        set of test data.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Setup a Test Backend</h4>
+                                <p class="text-sm text-gray-600 mb-2">Use a public dummy API like <code
+                                        class="bg-gray-100 px-1 rounded text-xs">JSONPlaceholder</code> or <code
+                                        class="bg-gray-100 px-1 rounded text-xs">reqres.in</code>. This gives you a
+                                    reliable server to hit without needing to write any backend code.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement Volley Requests</h4>
+                                <p class="text-sm text-gray-600 mb-3">Create a <code
+                                        class="bg-gray-50 px-1 rounded text-xs">JsonObjectRequest</code>. Add a timer
+                                    that starts when <code
+                                        class="bg-gray-50 px-1 rounded text-xs">queue.add(request)</code> is called and
+                                    stops inside the <code class="bg-gray-50 px-1 rounded text-xs">onResponse</code>
+                                    callback.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement Retrofit Requests</h4>
+                                <p class="text-sm text-gray-600 mb-3">Define a <code
+                                        class="bg-gray-50 px-1 rounded text-xs">ApiService</code> interface. Use a
+                                    similar timer logic wrapping the <code
+                                        class="bg-gray-50 px-1 rounded text-xs">service.getData().enqueue(...)</code>
+                                    call.</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>interface ApiService {
+    @GET("posts")
+    fun getPosts(): Call<List<Post>>
+}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Visual Audit: The Network Profiler</h4>
+                                <p class="text-sm text-gray-600 mb-2">This is where the "Science" happens!</p>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>In Android Studio, click **View → Tool Windows → App Inspection**.</li>
+                                    <li>Go to the **Network Inspector** tab.</li>
+                                    <li>Click a button to start a request.</li>
+                                    <li>**Screenshot the timeline!** Compare how Volley handles concurrent connections
+                                        versus how Retrofit handles them. You can see the exact KB/s for each!</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Measure "Boilerplate" Code</h4>
+                                <p class="text-sm text-gray-600 mb-2">Compare the lines of code required to parse a JSON
+                                    response into a custom Kotlin object. Retrofit usually wins this category because of
+                                    its built-in converters (like Gson or Moshi).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Latency Shootout"</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Which library is faster for
+                                a single "Get" request over stable Wi-Fi?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Perform 20 requests with each
+                                library to the same endpoint. Discard the fastest and slowest (outliers) and calculate
+                                the **Median** time. Graph them side-by-side.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Large File Stress Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does one library use
+                                significantly more memory during large downloads?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Download a 5MB image using Volley
+                                and then Retrofit. Use the **Memory Profiler** to see the peak memory usage during the
+                                transfer. Prove which one is more "Thread-Efficient."</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Handling the "Bad" Internet</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How well do they handle
+                                timeouts?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Use an emulator to simulate a
+                                **"Slow 3G"** connection (Settings → Battery → Cellular). Set a 2-second timeout.
+                                Compare how easy it is to write the `Retry` logic for each library.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Caching Strategy Audit</h4>
+                            <p class="text-sm text-gray-600">Instead of measuring speed, research
+                                <strong>Caching</strong>. Volley has a famous built-in cache, whereas Retrofit relies on
+                                its "interceptor" (OkHttp). Research which one is easier for a student to set up for an
+                                "Offline Mode" demo.</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Ktor: The Multiplatform Challenger</h4>
+                            <p class="text-sm text-gray-600">Google is moving towards Kotlin Multiplatform. Research
+                                <strong>Ktor Client</strong> as a third option. Can you find why some developers are
+                                moving away from both Volley and Retrofit for Ktor? This adds great "Future-proofing" to
+                                your research!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Network Inspector timeline screenshots (with KB/s data)</li>
+                                <li>Comparison table: "Implementation Difficulty" vs. "Performance"</li>
+                                <li>JSON to Kotlin object code "Snippets" (showing parsed data)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Use words like **"Async Callbacks,"**
+                                **"Deserialization,"** and **"Back-pressure."** Explain that your research helps a
+                                developer balance "Ease of Coding" with "App Startup Speed."</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Why does my app crash when I
+                                try to run a network request?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">You probably forgot the **Internet Permission** in
+                                your <code class="bg-gray-50 px-1 rounded text-xs">AndroidManifest.xml</code>! Also,
+                                Android prevents network requests on the "Main Thread" (it will crash with a <code
+                                    class="bg-gray-50 px-1 rounded text-xs">NetworkOnMainThreadException</code>). Both
+                                Volley and Retrofit handle this for you, but you must ensure your UI updates stay on the
+                                main thread.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Is Volley dead? Everyone seems
+                                to use Retrofit."</summary>
+                            <p class="text-sm text-gray-600 mt-3">Not at all! Volley is still actively maintained by
+                                Google and is fantastic for "standard" apps with lots of small images and metadata.
+                                Retrofit is favored for larger, more complex APIs. Your research might prove that Volley
+                                is actually "best" for certain small projects!</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Add Internet permission to your Android
+                                    Manifest</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Set up Volley request queue in a Singleton
+                                    class</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Set up a Retrofit interface with at least
+                                    one GET call</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create a JSON parsing "Converter" (Gson or
+                                    Moshi) for Retrofit</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Run the Network Profiler and screenshot a
+                                    live request</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Calculate the median response time from 10+
+                                    test runs</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

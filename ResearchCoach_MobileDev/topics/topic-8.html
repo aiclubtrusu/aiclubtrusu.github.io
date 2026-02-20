@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 8: Accessibility in Android Apps — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for auditing and improving accessibility in Android applications using tools like TalkBack and Accessibility Scanner.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">08</span>
+                <span class="category-badge badge-ux" style="background:rgba(255,255,255,0.15);color:#fff;">UX &
+                    Design</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Accessibility:<br>Building for Everyone
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                How do people use apps if they can't see the screen or have limited mobility? You'll research "Inclusive
+                Design" by auditing existing apps and measuring how much a few small code changes can improve the
+                experience.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Accessibility (often shortened to
+                        <strong>A11y</strong>) is about ensuring that <em>every</em> user has a great experience,
+                        regardless of their physical or cognitive abilities. On Android, this means supporting screen
+                        readers like <strong>TalkBack</strong>, high-contrast modes, and large touch targets.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you will become an
+                        <strong>Accessibility Auditor</strong>. You'll use automated tools to find "Low Hanging Fruit"
+                        (easy fixes) and then attempt a "Blindfolded Navigation" test using TalkBack. Your data will
+                        show the real-world gap between a "standard" app and an "accessible" one.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Quantify the difference in navigation efficiency and error
+                            rates between a baseline app and one optimized for Accessibility.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>An "Accessibility Scorecard" before and after your fixes</li>
+                        <li>Data on "Task Completion Time" using only TalkBack</li>
+                        <li>Heatmaps or screenshots from the **Accessibility Scanner**</li>
+                        <li>A comparison of "Linear vs. Logical" navigation focus order</li>
+                        <li>Photos of your app in "High Contrast" or "Large Font" modes</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Accessibility is a mix of technical standards and
+                        human empathy.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Google Accessibility Pillars</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/guide/topics/ui/accessibility"
+                                        class="text-tru-secondary hover:underline" target="_blank">Build more accessible
+                                        apps</a> — Official Android guide</li>
+                                <li><a href="https://m3.material.io/foundations/accessibility/overview"
+                                        class="text-tru-secondary hover:underline" target="_blank">Material 3
+                                        Accessibility Foundations</a> — Color, contrast, and layout rules</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🛠️ Auditing Tools</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://play.google.com/store/apps/details?id=com.google.android.apps.accessibility.auditor"
+                                        class="text-tru-secondary hover:underline" target="_blank">Accessibility
+                                        Scanner</a> — Download this to your phone or emulator</li>
+                                <li><a href="https://support.google.com/accessibility/android/answer/6283677"
+                                        class="text-tru-secondary hover:underline" target="_blank">TalkBack Tutorial</a>
+                                    — Learn the gestures (Swipe, Double-Tap)</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Read about the <strong>WCAG 2.1</strong> standards (Web
+                                Content Accessibility Guidelines). Even though they say "Web," the principles of
+                                Perceivable, Operable, Understandable, and Robust apply to Android too!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Content Description</h4>
+                            <p class="text-sm text-gray-600">The most important code fix. It's a "Label" for images and
+                                icons so the screen reader can say "Search Button" instead of "Unlabelled image 42."</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Traversal Order</h4>
+                            <p class="text-sm text-gray-600">The path a screen reader takes as you swipe. "Linear" order
+                                (top to bottom) is often confusing; you want "Logical" order that follows the meaning of
+                                the app.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Touch Targets</h4>
+                            <p class="text-sm text-gray-600">The invisible "Clickable Area" around a button. Android
+                                recommends at least **48x48dp**. Smaller targets are hard for users with motor
+                                impairments or large fingers.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Color Contrast</h4>
+                            <p class="text-sm text-gray-600">The difference in brightness between text and its
+                                background. A ratio of **4.5:1** is the gold standard for readability.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Learn to audit an app using both automated scans and
+                        manual testing.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Run the "Accessibility Scanner"</h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Install **Accessibility Scanner** from the Play Store.</li>
+                                    <li>Open the app you want to audit (e.g., your own project or a classmate's).</li>
+                                    <li>Tap the floating blue checkmark.</li>
+                                    <li>Select **"Snapshot."**</li>
+                                    <li>**Record the count:** How many "Suggestions" did it find? (e.g., 5 Contrast
+                                        issues, 2 Label issues).</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Perform a TalkBack "Swipe Audit"</h4>
+                                <p class="text-sm text-gray-600 mb-3">Turn on TalkBack (**Settings → Accessibility →
+                                    TalkBack**). Using only swipes and double-taps, try to complete a simple task (like
+                                    "Add an item to the cart").</p>
+                                <div class="callout callout-warning">
+                                    <div class="callout-icon">⚠️</div>
+                                    <div><strong>Warning:</strong> TalkBack changes your gestures! You must
+                                        **double-tap** to click and scroll with **two fingers**. It's frustrating at
+                                        first — and that's exactly what you should document!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement "A11y" Fixes</h4>
+                                <p class="text-sm text-gray-600 mb-3">In your Android Studio XML or Compose code, apply
+                                    the most common fixes based on your audit:</p>
+                                <div class="code-block"><span class="code-label">XML</span>
+                                    <pre><!-- Fix 1: Add a label -->
+<ImageButton
+    android:contentDescription="Submit Order"
+    ... />
+
+<!-- Fix 2: Increase touch target -->
+<Button
+    android:minHeight="48dp"
+    android:minWidth="48dp"
+    ... /></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Verify Navigation Order</h4>
+                                <p class="text-sm text-gray-600 mb-2">Use the <code
+                                        class="bg-gray-50 px-1 rounded text-xs">android:nextFocusDown</code> attribute
+                                    or Compose's <code class="bg-gray-50 px-1 rounded text-xs">focusProperties</code> to
+                                    ensure that when a user swiping through your app, the "Help" button doesn't come
+                                    before the "Login" button.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Eye-Strain" Test</h4>
+                                <p class="text-sm text-gray-600 mb-2">Go to **Settings → Display → Font Size** and set
+                                    it to "Largest." Does your app's layout break? Do buttons overlap? Take a "Bug
+                                    Screenshot" for your poster.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Blind Navigation" Race</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How much time do "Content
+                                Descriptions" actually save?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Ask two friends to use TaskTalk.
+                                One uses an app with no labels, the other uses your fixed version. Time how long it
+                                takes to find the "Menu." Graph the difference!</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Scanner Suggestion Count</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Which apps on the Play
+                                Store are the most accessible?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Run the Accessibility Scanner on 5
+                                popular apps (Instagram, Gmail, TikTok, etc.). Compare the number of "Warnings." Create
+                                a "Hall of Fame / Hall of Shame" table for your poster.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Target Diameter vs. Error Rate</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does target size affect
+                                users with average dexterity?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Build a simple "Whack-a-Mole" game
+                                with buttons of different sizes (24dp, 32dp, 48dp). Track how many times the user
+                                "misses" or clicks outside the button. Use this to prove why the 48dp rule exists.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">A11y Hierarchy Mapping</h4>
+                            <p class="text-sm text-gray-600">Instead of fixing code, create a <strong>Visual
+                                    Diagram</strong> of your app's "Accessibility Tree." Map out every element that
+                                TalkBack sees. Cross out elements that are "Decorative" and shouldn't be announced. This
+                                shows a deep understanding of A11y design.</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">User Interview (Extreme Persona)</h4>
+                            <p class="text-sm text-gray-600">Research a specific disability (e.g., Color Blindness or
+                                Parkinson's). Audit your app specifically for that persona. Show how "High Contrast" or
+                                "Reduced Motion" settings radically change the experience for them.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Automated Scanner "Alert" screenshots (the red boxes)</li>
+                                <li>Focus Order Diagram (arrows showing the navigation path)</li>
+                                <li>Large Font / High Contrast "Comparison" photos</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Don't just talk about "fixing bugs." Talk about "removing
+                                barriers." Use the phrase **"Inclusive Design"** to show that accessibility benefits
+                                everyone (including people who are outside in bright sun or have a broken arm!).</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"I added a label to my logo, but
+                                is that enough?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Probably not! If the logo is just for decoration and
+                                doesn't *do* anything, it's better to set <code
+                                    class="bg-gray-50 px-1 rounded text-xs">android:importantForAccessibility="no"</code>.
+                                You don't want to clutter the screen reader's voice with useless info.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can't I just use a Contrast
+                                Checker app?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Yes, but they are often inaccurate for gradients or
+                                background images. The best way to research contrast is to use the actual Hex codes from
+                                your layout and plug them into **WebAIM's Contrast Checker**.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Enable TalkBack and complete the built-in
+                                    tutorial</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Install "Accessibility Scanner" and scan
+                                    your prototype</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Identify 3+ images without "Content
+                                    Descriptions"</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Measure 3 different touch targets vs the
+                                    48dp standard</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Time yourself completing 3 app tasks using
+                                    only TalkBack</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Check the "Large Font" layout for broken UI
+                                    elements</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Fix the identified issues and re-run all
+                                    measurements</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

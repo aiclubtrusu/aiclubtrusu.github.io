@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 12: Dark Mode Support — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for studying dark mode usability and battery impact on Android devices.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">12</span>
+                <span class="category-badge badge-ux" style="background:rgba(255,255,255,0.15);color:#fff;">UX &amp;
+                    Design</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Dark Mode Support:<br>Usability and Battery Impact
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Explore how dark mode affects user experience, readability, and battery life. You'll implement themes,
+                run user surveys, measure battery consumption, and learn what makes dark mode truly effective.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Dark mode has become one of the most requested
+                        features in mobile apps. But <em>why</em>? Is it actually better for your eyes? Does it really
+                        save battery? Your research will explore these questions through a combination of
+                        <strong>reading existing studies</strong>, <strong>implementing dark/light themes</strong>, and
+                        <strong>conducting simple experiments</strong>.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">This topic is unique because it blends
+                        <strong>technical measurement</strong> (battery, performance) with <strong>user experience
+                            research</strong> (surveys, readability). This makes for a very rich and interesting poster!
+                    </p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Remember:</strong> You're not inventing dark mode. You're exploring existing
+                            research, implementing a simple example, and running beginner-friendly experiments to
+                            understand the trade-offs. Think of yourself as explorers!</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>How OLED vs. LCD screens affect dark mode battery savings</li>
+                        <li>User preference data (from your own survey)</li>
+                        <li>Implementation examples showing how to build Android themes</li>
+                        <li>Design guidelines for effective dark mode interfaces</li>
+                        <li>Accessibility considerations and readability findings</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Start by reading these resources. Focus on
+                        understanding the <em>why</em> behind dark mode, not just the <em>how</em>.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Android Documentation
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/develop/ui/views/theming/darktheme"
+                                        class="text-tru-secondary hover:underline" target="_blank">Dark Theme Guide</a>
+                                    — Google's official guide to implementing dark mode</li>
+                                <li><a href="https://m3.material.io/styles/color/dark-theme"
+                                        class="text-tru-secondary hover:underline" target="_blank">Material Design 3 —
+                                        Dark Theme</a> — Design guidelines for dark mode colors</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔋 Battery Research</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Purdue University dark mode battery study"</em> — A landmark study
+                                    showing 39-47% battery savings at full brightness on OLED</li>
+                                <li>Search: <em>"Android Authority true black vs dark gray battery"</em> — Surprising
+                                    finding: true black saves only ~0.3% more than dark gray</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">👁️ Usability Research</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Nielsen Norman Group dark mode usability"</em> — Research on
+                                    readability and eye strain</li>
+                                <li>Search: <em>"dark mode cognitive load research"</em> — Studies on how dark/light
+                                    modes affect mental effort</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> As you read, organize your notes into two categories:
+                                <em>"Battery/Technical"</em> and <em>"Usability/UX"</em>. This will map directly to your
+                                poster sections.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts You Need to Understand</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">OLED vs. LCD Screens</h4>
+                            <p class="text-sm text-gray-600"><strong>OLED</strong> pixels produce their own light. A
+                                black pixel is literally turned <em>off</em> (saving power). <strong>LCD</strong>
+                                screens have a constant backlight behind all pixels — black pixels still block light but
+                                the backlight stays on. This is why dark mode saves more battery on OLED.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">True Black vs. Dark Gray</h4>
+                            <p class="text-sm text-gray-600">Google's Material Design recommends <strong>dark gray
+                                    (#121212)</strong> over true black (#000000) for dark mode. Why? Pure black next to
+                                white text creates very high contrast that can cause <em>halation</em> (a bright glow
+                                around text that strains your eyes). Dark gray is easier to read.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Contrast Ratio</h4>
+                            <p class="text-sm text-gray-600">The difference in brightness between text and background.
+                                WCAG accessibility guidelines recommend at least <strong>4.5:1</strong> for normal text
+                                and <strong>3:1</strong> for large text. Too little contrast = hard to read. Too much =
+                                eye strain. Dark mode must balance this carefully.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Positive vs. Negative Polarity</h4>
+                            <p class="text-sm text-gray-600"><strong>Positive polarity</strong> = dark text on light
+                                background (light mode). <strong>Negative polarity</strong> = light text on dark
+                                background (dark mode). Research shows positive polarity is generally better for
+                                <em>readability</em>, but negative polarity can reduce <em>eye strain</em> in low light.
+                            </p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Android Theme System</h4>
+                            <p class="text-sm text-gray-600">Android uses <code
+                                    class="bg-white px-1 rounded text-xs">themes.xml</code> (or <code
+                                    class="bg-white px-1 rounded text-xs">styles.xml</code>) to define app-wide colors.
+                                You create a "night" variant in <code
+                                    class="bg-white px-1 rounded text-xs">res/values-night/</code> to define dark mode
+                                colors. Android switches automatically based on system setting.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">DayNight Theme</h4>
+                            <p class="text-sm text-gray-600">Android's <code
+                                    class="bg-white px-1 rounded text-xs">Theme.MaterialComponents.DayNight</code> is
+                                the base theme that enables automatic day/night switching. Your app inherits from this
+                                and overrides specific colors for each mode.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">This topic has two tracks: <strong>Technical</strong>
+                        (implementing themes + measuring battery) and <strong>UX</strong> (running user surveys). Follow
+                        both for a comprehensive poster!</p>
+
+                    <h3>Phase 1: Implement Dark Mode in a Sample App</h3>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create a New Android Project</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a new project with <strong>Empty Views
+                                        Activity</strong>. Name it <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">DarkModeStudy</code>. Choose API
+                                    21+ (Android 5.0) as minimum SDK.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Set Up the DayNight Theme</h4>
+                                <p class="text-sm text-gray-600 mb-3">Open <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">res/values/themes.xml</code> and
+                                    ensure your base theme extends DayNight:</p>
+                                <div class="code-block"><span class="code-label">XML</span>
+                                    <pre>&lt;!-- res/values/themes.xml (Light Mode) --&gt;
+&lt;resources&gt;
+  &lt;style name="Theme.DarkModeStudy"
+         parent="Theme.MaterialComponents.DayNight.DarkActionBar"&gt;
+    &lt;item name="colorPrimary"&gt;#1976D2&lt;/item&gt;
+    &lt;item name="colorOnPrimary"&gt;#FFFFFF&lt;/item&gt;
+    &lt;item name="android:colorBackground"&gt;#FFFFFF&lt;/item&gt;
+    &lt;item name="colorOnBackground"&gt;#1C1B1F&lt;/item&gt;
+    &lt;item name="colorSurface"&gt;#FFFFFF&lt;/item&gt;
+    &lt;item name="colorOnSurface"&gt;#1C1B1F&lt;/item&gt;
+  &lt;/style&gt;
+&lt;/resources&gt;</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create the Night Theme Variant</h4>
+                                <p class="text-sm text-gray-600 mb-3">Right-click on <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">res/values</code> → <strong>New
+                                        → Values Resource Directory</strong>. Name it <code
+                                        class="bg-gray-100 px-2 py-0.5 rounded text-xs">values-night</code>. Create
+                                    <code class="bg-gray-100 px-2 py-0.5 rounded text-xs">themes.xml</code> inside it:
+                                </p>
+                                <div class="code-block"><span class="code-label">XML</span>
+                                    <pre>&lt;!-- res/values-night/themes.xml (Dark Mode) --&gt;
+&lt;resources&gt;
+  &lt;style name="Theme.DarkModeStudy"
+         parent="Theme.MaterialComponents.DayNight.DarkActionBar"&gt;
+    &lt;item name="colorPrimary"&gt;#90CAF9&lt;/item&gt;
+    &lt;item name="colorOnPrimary"&gt;#003258&lt;/item&gt;
+    &lt;item name="android:colorBackground"&gt;#121212&lt;/item&gt;
+    &lt;item name="colorOnBackground"&gt;#E3E3E3&lt;/item&gt;
+    &lt;item name="colorSurface"&gt;#1E1E1E&lt;/item&gt;
+    &lt;item name="colorOnSurface"&gt;#E3E3E3&lt;/item&gt;
+  &lt;/style&gt;
+&lt;/resources&gt;</pre>
+                                </div>
+                                <div class="callout callout-info">
+                                    <div class="callout-icon">👀</div>
+                                    <div><strong>Notice:</strong> We used <code
+                                            class="bg-white/80 px-1 rounded text-xs">#121212</code> (dark gray) instead
+                                        of <code class="bg-white/80 px-1 rounded text-xs">#000000</code> (true black)
+                                        following Material Design guidelines. You can experiment with both!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Add a Toggle Button in Your App</h4>
+                                <p class="text-sm text-gray-600 mb-3">Let users switch between dark and light mode with
+                                    a button. Add this to your Activity:</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>// In your Activity
+import androidx.appcompat.app.AppCompatDelegate
+
+// Toggle dark mode on button click:
+toggleButton.setOnClickListener {
+    val currentMode = AppCompatDelegate.getDefaultNightMode()
+    if (currentMode == AppCompatDelegate.MODE_NIGHT_YES) {
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_NO
+        )
+    } else {
+        AppCompatDelegate.setDefaultNightMode(
+            AppCompatDelegate.MODE_NIGHT_YES
+        )
+    }
+}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Phase 2: Battery Measurement</h3>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Simple Battery Level Monitoring</h4>
+                                <p class="text-sm text-gray-600 mb-3">The simplest way to observe battery impact. On an
+                                    Android device or emulator:</p>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Go to <strong>Settings → Battery</strong> and note the current battery
+                                        percentage</li>
+                                    <li>Open your app in <strong>Light Mode</strong> at full brightness</li>
+                                    <li>Leave it on-screen for 15-20 minutes (don't interact with it)</li>
+                                    <li>Note the battery percentage again</li>
+                                    <li>Charge back to the same level, then repeat with <strong>Dark Mode</strong></li>
+                                    <li>Compare the battery drain</li>
+                                </ol>
+                                <div class="callout callout-warning">
+                                    <div class="callout-icon">⚠️</div>
+                                    <div><strong>Important:</strong> This works best on a <strong>physical device with
+                                            an OLED screen</strong>. On an emulator or LCD device, the difference will
+                                        be much smaller. If you only have an emulator, that's okay — note it in your
+                                        methodology and focus on the <em>theoretical</em> explanation instead.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">6</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Using Battery Stats via ADB (Advanced)</h4>
+                                <p class="text-sm text-gray-600 mb-3">For more precise data, use Android Debug Bridge
+                                    (ADB) commands. Open the <strong>Terminal</strong> in Android Studio (bottom panel,
+                                    "Terminal" tab):</p>
+                                <div class="code-block"><span class="code-label">Terminal</span>
+                                    <pre># Reset battery stats
+adb shell dumpsys batterystats --reset
+
+# Use your app in Light mode for 15 min, then:
+adb shell dumpsys batterystats &gt; light_mode_stats.txt
+
+# Reset and repeat for Dark mode:
+adb shell dumpsys batterystats --reset
+# (use app in Dark mode for 15 min)
+adb shell dumpsys batterystats &gt; dark_mode_stats.txt</pre>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">Search these files for your app's package name to
+                                    find its power consumption. This gives you real data to put on your poster!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Phase 3: User Experience Survey</h3>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">7</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Design a Simple User Survey</h4>
+                                <p class="text-sm text-gray-600 mb-3">Create a Google Form with 8-10 questions. Here are
+                                    suggested questions:</p>
+                                <ol class="text-sm text-gray-600 space-y-1 ml-4 list-decimal">
+                                    <li>Do you currently use dark mode on your phone? (Yes/No)</li>
+                                    <li>Why do you prefer dark/light mode? (Multiple choice)</li>
+                                    <li><em>Show both screenshots:</em> Which version is easier to read?
+                                        (Light/Dark/Same)</li>
+                                    <li>Rate the readability of the dark mode version (1-5 scale)</li>
+                                    <li>Rate the readability of the light mode version (1-5 scale)</li>
+                                    <li>Do you experience eye strain with dark mode? (Never/Sometimes/Often)</li>
+                                    <li>In what lighting conditions do you prefer dark mode? (Dark room/Any/Bright
+                                        light)</li>
+                                    <li>Do you believe dark mode saves battery? (Yes/No/Unsure)</li>
+                                </ol>
+                                <div class="callout callout-tip">
+                                    <div class="callout-icon">📊</div>
+                                    <div><strong>Survey tip:</strong> Aim for at least <strong>15-20 responses</strong>.
+                                        Share it with classmates, friends, or family. Even a small sample makes your
+                                        poster more convincing than no data at all!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Pick 2-3 experiments that interest you the most. Each
+                        one gives you data for your poster.</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">Battery Drain Comparison</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How much battery does dark
+                                mode actually save?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Run your app in light and
+                                dark mode for equal time periods at different brightness levels (30%, 50%, 100%). Record
+                                battery percentage before and after each session.</p>
+                            <p class="text-sm text-gray-600"><strong>Expected:</strong> At 100% brightness on OLED, dark
+                                mode may save 30-40%. At 30%, the saving drops to 3-9%.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">User Preference Survey</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> What percentage of users
+                                prefer dark mode, and why?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Distribute your Google Form
+                                survey to 15-20+ people. Analyze the results using Google Sheets charts.</p>
+                            <p class="text-sm text-gray-600"><strong>Poster visual:</strong> Pie charts showing
+                                preference percentages and bar charts showing reasons for preference.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">True Black vs. Dark Gray Comparison</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Is true black (#000000)
+                                better than dark gray (#121212)?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Create two dark mode variants
+                                — one with true black, one with dark gray. Show both to users and ask which they find
+                                more comfortable. Test readability with a timed reading task.</p>
+                            <p class="text-sm text-gray-600"><strong>Why interesting:</strong> Most users assume
+                                "blacker = better" but research suggests dark gray is actually more comfortable!</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#FFF3E0;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold text-sm">D</span>
+                                <h4 class="font-semibold text-gray-800">Readability Under Different Lighting</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Is dark mode actually
+                                better in low light?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Have users read the same
+                                content in light mode vs. dark mode in (a) a bright room and (b) a dark room. Time how
+                                long it takes them to find specific information. Ask them to rate comfort.</p>
+                            <p class="text-sm text-gray-600"><strong>Expected:</strong> Dark mode tends to be preferred
+                                in dark rooms; light mode is often more readable in bright environments.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#FCE4EC;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-pink-100 text-pink-700 font-bold text-sm">E</span>
+                                <h4 class="font-semibold text-gray-800">Contrast Ratio Analysis</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Do popular apps meet
+                                accessibility contrast standards in dark mode?</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Method:</strong> Use an online contrast
+                                checker (search: <em>"WebAIM contrast checker"</em>). Input the dark mode background and
+                                text colors from 5 popular apps. Check if they meet WCAG AA (4.5:1) standards.</p>
+                            <p class="text-sm text-gray-600"><strong>Poster visual:</strong> A table showing pass/fail
+                                for each app — very compelling data!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Option 1: Pure Literature Review + Survey
+                            </h4>
+                            <p class="text-sm text-gray-600 mb-2">If battery testing is difficult (no physical OLED
+                                device), focus on:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Summarizing findings from the Purdue study and other published research</li>
+                                <li>Running a user preference survey with your classmates</li>
+                                <li>Showing implementation code examples (even if you don't measure battery yourself)
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Option 2: App Audit Approach</h4>
+                            <p class="text-sm text-gray-600 mb-2">Instead of building your own app, audit existing apps:
+                            </p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Pick 5-8 popular apps (YouTube, Twitter/X, Instagram, WhatsApp, etc.)</li>
+                                <li>Screenshot their dark mode implementations</li>
+                                <li>Analyze: Do they use true black or dark gray? What colors do they use for text? Do
+                                    they meet contrast guidelines?</li>
+                                <li>Rate each app's dark mode quality and explain why</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Option 3: Accessibility Focus</h4>
+                            <p class="text-sm text-gray-600 mb-2">Combine dark mode with accessibility research:</p>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Research how dark mode affects users with visual impairments</li>
+                                <li>Test with Android's TalkBack screen reader — does dark mode change the experience?
+                                </li>
+                                <li>Explore the "High Contrast" accessibility setting and how it interacts with dark
+                                    mode</li>
+                            </ul>
+                            <div class="callout callout-tip mt-2">
+                                <div class="callout-icon">💡</div>
+                                <div>Accessibility is an underexplored angle that would make your poster stand out! Very
+                                    few students think to investigate this.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Must-Have Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Side-by-side app screenshots (light vs. dark)</li>
+                                <li>Battery drain graph at different brightness levels</li>
+                                <li>Survey result charts (pie or bar)</li>
+                                <li>OLED vs LCD diagram explaining the technology</li>
+                                <li>Contrast ratio comparison table</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Suggested Poster Sections</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li><strong>Introduction:</strong> Why dark mode matters</li>
+                                <li><strong>How It Works:</strong> OLED vs LCD explanation</li>
+                                <li><strong>Implementation:</strong> Code snippets</li>
+                                <li><strong>Battery Results:</strong> Your measurements or literature findings</li>
+                                <li><strong>User Survey Results:</strong> Charts from your survey</li>
+                                <li><strong>Design Guidelines:</strong> Best practices</li>
+                                <li><strong>Conclusion:</strong> Balanced recommendation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"I don't have an OLED device to
+                                test battery"</summary>
+                            <p class="text-sm text-gray-600 mt-3">That's okay! Focus on the Purdue study's published
+                                data and clearly state in your methodology: "Battery data is based on published research
+                                by [source] since physical OLED testing was not available." Then strengthen your poster
+                                with a user preference survey.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"My survey only got 10
+                                responses"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Any data is better than no data! Just be transparent:
+                                "We surveyed 10 participants." Don't draw sweeping conclusions from small samples. Say
+                                "Our small sample suggests..." rather than "Users prefer..."</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Dark mode doesn't look
+                                different on the emulator"</summary>
+                            <p class="text-sm text-gray-600 mt-3">The emulator uses your computer's LCD screen, so you
+                                won't see battery differences. But the <em>visual</em> theme should still change! Make
+                                sure you have both <code
+                                    class="bg-white px-1 rounded text-xs">res/values/themes.xml</code> and <code
+                                    class="bg-white px-1 rounded text-xs">res/values-night/themes.xml</code> and that
+                                your layouts use theme attributes like <code
+                                    class="bg-white px-1 rounded text-xs">?attr/colorSurface</code>.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Should I conclude that dark
+                                mode is always better?"</summary>
+                            <p class="text-sm text-gray-600 mt-3"><strong>No!</strong> The best research acknowledges
+                                nuance. Dark mode has trade-offs: battery savings depend on screen type and brightness,
+                                readability can be worse in bright environments, and not all users prefer it. A nuanced
+                                conclusion shows mature thinking.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Track your group's progress:</p>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Read at least 3 background sources
+                                    (official docs + Purdue study + 1 more)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Understand the difference between OLED and
+                                    LCD screens</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create a sample Android app with DayNight
+                                    theme</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement both light and dark theme
+                                    variants</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Add a dark mode toggle button</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Run at least one battery measurement
+                                    experiment (or cite research)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Design and distribute user preference
+                                    survey</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Collect and analyze survey results</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create comparison visuals and charts</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Write conclusions and design
+                                    recommendations</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Design and complete your poster</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">COMP 2160 — Mobile Application Development · Thompson Rivers University</div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                document.getElementById(link.getAttribute('href').substring(1)).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 13: Image Loading — Glide vs. Picasso — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing Glide and Picasso image loading libraries in Android.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">13</span>
+                <span class="category-badge badge-performance"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Performance</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                The Battle of the Images:<br>Glide vs. Picasso
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Why does loading a big photo sometimes crash your app? Tiny mistakes in memory management can lead to
+                the dreaded "Out of Memory" error. Research how the pros use libraries to load images efficiently, keep
+                scrolling smooth, and save data.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Loading images on Android is surprisingly hard.
+                        High-resolution photos can easily consume the entire memory (RAM) allocated to your app, causing
+                        it to freeze or crash. To solve this, developers use 3rd-party libraries like **Glide** (by
+                        Google) and **Picasso** (by Square).</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you'll compare these two industry
+                        giants. You'll measure "Time to First Pixel," monitor RAM usage during aggressive scrolling, and
+                        discover why **Resizing** an image before it hits the screen is the most important optimization
+                        you can make.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Quantify the difference in memory consumption and cache
+                            efficiency between Glide and Picasso when loading 50+ high-resolution images in a grid.
+                        </div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A "Memory Profile" chart comparing peak RAM usage</li>
+                        <li>A comparison table of library features (e.g., GIF support, placeholder animations)</li>
+                        <li>Code snippets: Show how `with()`, `load()`, and `into()` look in both libraries</li>
+                        <li>A visualization of **Disk Cache** vs. **Memory Cache**</li>
+                        <li>Data on "Scroll Smoothness" (FPS) during a stress test</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Understand why Bitmaps are so memory-hungry.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 The Bitmap Problem</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/topic/performance/graphics/manage-memory"
+                                        class="text-tru-secondary hover:underline" target="_blank">Managing Bitmap
+                                        Memory</a> — Why images are dangerous</li>
+                                <li><a href="https://github.com/bumptech/glide"
+                                        class="text-tru-secondary hover:underline" target="_blank">Glide
+                                        Documentation</a> &amp; <a href="https://square.github.io/picasso/"
+                                        class="text-tru-secondary hover:underline" target="_blank">Picasso
+                                        Documentation</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔍 Academic Comparison</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Glide vs Picasso performance benchmark 2024"</em></li>
+                                <li>Search: <em>"Android OutOfMemoryError best practices for image loading"</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Check out <strong>Coil</strong> (Coroutine Image
+                                Loader). It's the new Kotlin-first library that is slowly replacing Glide in modern
+                                apps!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Memory Caching</h4>
+                            <p class="text-sm text-gray-600">Storing the image in the phone's RAM. It's instant but
+                                limited. If you fill up the memory, the app crashes.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Disk Caching</h4>
+                            <p class="text-sm text-gray-600">Storing the image on the phone's storage (SSD). Slower than
+                                RAM but allows the app to load images offline or after a restart.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Bitmap Pooling</h4>
+                            <p class="text-sm text-gray-600">Reusing old image memory for new images. Glide is famous
+                                for this — it reduces the "Garbage Collection" stutter during scrolling.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Downsampling</h4>
+                            <p class="text-gray-600 text-sm">Decoding a 4000x4000 image into exactly a 500x500 slot.
+                                This saves massive amounts of RAM.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Learn to measure the impact of these libraries on your
+                        app's health.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create the "Stress Test" Grid</h4>
+                                <p class="text-sm text-gray-600 mb-2">Build a `RecyclerView` with a 3-column grid.
+                                    You'll need a huge list of image URLs (use <code
+                                        class="bg-gray-100 px-1 rounded text-xs">picsum.photos</code> for easy, high-res
+                                    random images).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement Glide and Picasso</h4>
+                                <p class="text-sm text-gray-600 mb-3">Add both libraries to your <code
+                                        class="bg-gray-50 px-1 rounded text-xs">build.gradle</code>. Create a toggle or
+                                    two separate apps to switch between them easily.</p>
+                                <div
+                                    class="bg-gray-100 p-3 rounded-lg font-mono text-xs text-tru-primary overflow-x-auto">
+                                    <pre>
+// Glide Implementation
+Glide.with(context)
+     .load(url)
+     .placeholder(R.drawable.loading)
+     .centerCrop()
+     .into(imageView)
+
+// Picasso Implementation
+Picasso.get()
+       .load(url)
+       .placeholder(R.drawable.loading)
+       .fit()
+       .into(imageView)
+</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The Memory Profiler Audit</h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Open the **Memory Profiler** in Android Studio.</li>
+                                    <li>Scroll through the grid of 100 images as fast as possible.</li>
+                                    <li>Record the **"Memory Peak"** (the highest point the graph hits).</li>
+                                    <li>Notice the "Garbage Collection" (light blue spikes). Does Glide have fewer of
+                                        them?</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Test Network Efficiency</h4>
+                                <p class="text-sm text-gray-600 mb-2">Clear your app's cache (or uninstall-reinstall).
+                                    Load the grid once. Force quit the app, turn on <strong>Airplane Mode</strong>, and
+                                    open the app again. Which library successfully shows images from the <strong>Disk
+                                        Cache</strong>? Document your findings.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Quality" Blind Test</h4>
+                                <p class="text-sm text-gray-600 mb-2">By default, Glide uses `RGB_565` (16-bit color)
+                                    while Picasso uses `ARGB_8888` (32-bit color). Zoom into a photo in both versions.
+                                    Can you see a difference in quality? This is a trade-off between
+                                    <strong>Beauty</strong> and <strong>Memory</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "OOM" (Out of Memory) Race</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How many images does it
+                                take to crash an app without a library?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Create a third version of your app
+                                using native `BitmapFactory.decodeStream()`. See how far you can scroll before the app
+                                crashes. This proves *why* the libraries are necessary for your poster.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Placeholder Aesthetics Study</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Do users prefer a spinner,
+                                a grey box, or a "blur-hash"?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Implement different "Placeholder"
+                                strategies using Glide's `.placeholder()` feature. Survey students on which one makes
+                                the app feel "Faster" even if the load time is identical.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">The "GIF" Performance Challenge</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Is loading a GIF
+                                significantly more expensive than a JPEG?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Load 5 identical GIFs in a list.
+                                Compare the CPU usage in the Profiler to loading 5 JPEGs. Glide handles GIFs natively —
+                                Picasso requires extra setup. Document this complexity difference.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Coil: The Modern Choice</h4>
+                            <p class="text-sm text-gray-600">If you are using Kotlin and Jetpack Compose, research
+                                <strong>Coil</strong>. It uses Kotlin Coroutines and has a much smaller "Method Count."
+                                Most new TRU projects should probably use Coil!</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Custom Image Loading</h4>
+                            <p class="text-sm text-gray-600">For a highly technical research project, you could try
+                                building your own basic loader using `LruCache` and `ExecutorService`. This helps you
+                                truly understand what Glide is doing "under the hood."</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Side-by-side Memory Profiler graphs</li>
+                                <li>Diagram of the "Loading Lifecycle" (Request → Cache Check → Fetch → Decode → View)
+                                </li>
+                                <li>Table comparing Library Size vs. Performance</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Use terms like **"Cache Hit Rate,"** **"Main Thread
+                                Blocking,"** and **"Memory Leak Mitigation."** Explain that choosing the right library
+                                prevents the #1 cause of Android app crashes: `java.lang.OutOfMemoryError`.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Glide isn't loading my image!
+                                It just shows the placeholder."</summary>
+                            <p class="text-sm text-gray-600 mt-3">Usually, this is because you forgot the
+                                <strong>INTERNET</strong> permission in your Manifest, or the URL you're using is using
+                                HTTP instead of HTTPS (Android blocks HTTP by default now).</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Should I use `.fit()` or
+                                `.centerCrop()`?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Both libraries have these. Research the difference!
+                                `Fit` resizes to match the view exactly, while `CenterCrop` crops the image to fill the
+                                space. Choosing the wrong one can make your app look stretched or blurry.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Set up a RecyclerView with at least 50
+                                    remote image links</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement Glide-based image loading in the
+                                    adapter</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement Picasso-based image loading in
+                                    the same adapter (swappable)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Record RAM usage with Android Studio
+                                    Profiler for both</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Test Disk Caching by loading while in
+                                    Airplane Mode</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Identify the library with the best balance
+                                    of quality and RAM usage</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

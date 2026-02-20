@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 4: Intent Security — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for exploring Android Intent security, explicit vs. implicit intents, and preventing data exposure.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">04</span>
+                <span class="category-badge badge-security"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Security</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Intent Security:<br>Explicit vs. Implicit
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Don't let hackers eavesdrop on your app's internal talks. You'll explore how Android Intents can be
+                intercepted, learn the difference between explicit and implicit messaging, and build security "locks"
+                into your app manifest.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">In Android, an <strong>Intent</strong> is like a
+                        letter that one part of an app sends to another. But if you're not careful, that letter can be
+                        "intercepted" by a malicious app on the same device. This is especially true for
+                        <strong>Implicit Intents</strong>, which are open broadcasts that any app can claim to handle.
+                    </p>
+                    <p class="text-gray-600 leading-relaxed mb-4">Your research will explore how to pass data securely
+                        between your app's components. You'll investigate the <code
+                            class="bg-gray-50 px-1 rounded text-xs">android:exported</code> attribute, experiment with
+                        <strong>Intent Hijacking</strong>, and learn why <strong>Explicit Intents</strong> are your best
+                        line of defense.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Scary Fact:</strong> If you use an implicit intent to send a user's password to
+                            another part of your app, a malicious "listener" app could steal it without the user ever
+                            knowing!</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>Comparison between Explicit and Implicit intent flows</li>
+                        <li>Demonstration of "Intent Interception" (how it looks to a user)</li>
+                        <li>Manifest security settings for Activities and Services</li>
+                        <li>Code examples of secure vs. insecure data passing</li>
+                        <li>Analysis of the `exported` flag and its security implications</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Understand the security model of Android Intents
+                        before you start hacking.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Android Documentation
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/guide/components/intents-filters"
+                                        class="text-tru-secondary hover:underline" target="_blank">Intents and Intent
+                                        Filters</a> — The basics of Android messaging</li>
+                                <li><a href="https://developer.android.com/privacy-and-security/security-tips#Communication"
+                                        class="text-tru-secondary hover:underline" target="_blank">Android Security
+                                        Tips: IPC</a> — How to communicate securely</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🛡️ Research Articles</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Android Intent hijacking explained"</em> — Real-world vulnerability
+                                    examples</li>
+                                <li>Search: <em>"Android exported=false significance"</em> — Why this manifest flag is
+                                    so important</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Starting in Android 12, the <code
+                                    class="bg-white/80 px-1 rounded text-xs">android:exported</code> attribute is
+                                <strong>required</strong> for all components with intent filters. Research WHY Google
+                                made this change.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Explicit Intent</h4>
+                            <p class="text-sm text-gray-600">A targeted message that specifies exactly which class
+                                should handle it (e.g., "Send this to <code
+                                    class="bg-white px-1 rounded text-xs">ProfileActivity</code>"). Very secure because
+                                only your app can receive it.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Implicit Intent</h4>
+                            <p class="text-sm text-gray-600">A broadcast that describes an action but not a target
+                                (e.g., "Find an app that can open this PDF"). Less secure because any app on the phone
+                                can offer to handle it.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">`android:exported`</h4>
+                            <p class="text-sm text-gray-600">A flag in your <code
+                                    class="bg-white px-1 rounded text-xs">AndroidManifest.xml</code>. If set to <code
+                                    class="bg-white px-1 rounded text-xs">true</code>, other apps on the device can
+                                launch that component. If <code class="bg-white px-1 rounded text-xs">false</code>, it's
+                                private to your app.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Intent Hijacking</h4>
+                            <p class="text-sm text-gray-600">An attack where a malicious app registers an intent filter
+                                that matches your app's implicit intent, allowing the attacker to "steal" the intent and
+                                its data.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">See security in action by building two apps: a
+                        "Victim" app and a "Attacker" app.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create the "Victim" App</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a new project. Add a button that sends an
+                                    <strong>Implicit Intent</strong> with a "secret" message.</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>// Sending an INSECURE implicit intent
+val intent = Intent("com.example.ACTION_SECRET_PROCESS").apply {
+    putExtra("CONFIDENTIAL_DATA", "User123_Pass_Secret")
+}
+startActivity(intent)</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create the "Attacker" App</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a second, separate app project. Add an
+                                    Activity and register it in the manifest to "intercept" that specific action.</p>
+                                <div class="code-block"><span class="code-label">XML</span>
+                                    <pre>&lt;!-- AndroidManifest.xml (Attacker App) --&gt;
+&lt;activity android:name=".StealDataActivity"
+          android:exported="true"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="com.example.ACTION_SECRET_PROCESS" /&gt;
+        &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;</pre>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">In the <code
+                                        class="bg-gray-50 px-1 rounded text-xs">onCreate</code> of this activity, use
+                                    <code
+                                        class="bg-gray-50 px-1 rounded text-xs">intent.getStringExtra("CONFIDENTIAL_DATA")</code>
+                                    and display it in a Toast.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Hijacking" Experiment</h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>Install both apps on your device/emulator</li>
+                                    <li>In the Victim app, click the "Send Secret" button</li>
+                                    <li>Watch the **App Chooser** pop up. This is Android asking the user who should get
+                                        the secret!</li>
+                                    <li>Select the Attacker app. The Attacker app will now show the "secret" password.
+                                    </li>
+                                </ol>
+                                <div class="callout callout-warning">
+                                    <div class="callout-icon">⚠️</div>
+                                    <div><strong>Observation:</strong> Even if the user selects your app, the fact that
+                                        an attacker app <em>appeared in the list</em> is a security risk. A user might
+                                        click it by mistake!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implementation: Explicit Intents (The Fix)
+                                </h4>
+                                <p class="text-sm text-gray-600 mb-2">Modify the Victim app to use an **Explicit
+                                    Intent**. Notice that the "App Chooser" no longer appears — the data goes straight
+                                    to the correct place.</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>// Secure way: Explicitly target the class
+val intent = Intent(this, InternalActivity::class.java).apply {
+    putExtra("CONFIDENTIAL_DATA", "User123_Pass_Secret")
+}
+startActivity(intent)</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Audit: The Exported Attribute</h4>
+                                <p class="text-sm text-gray-600 mb-2">Try setting <code
+                                        class="bg-gray-50 px-1 rounded text-xs">android:exported="false"</code> for your
+                                    Activity in the Victim app. Now try to launch it from the Attacker app using an
+                                    explicit intent targeting that class. What happens? (Prepare for a <code
+                                        class="bg-gray-50 px-1 rounded text-xs">SecurityException</code> crash!)</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#FCE4EC;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-pink-100 text-pink-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">Permission-Protected Intents</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Can we use custom
+                                permissions to keep an implicit intent secure?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Create a custom permission in your
+                                manifest. Attach <code class="bg-gray-50 px-1 rounded text-xs">android:permission</code>
+                                to your receiver. Only apps with that permission can send intents to you. Test if an app
+                                without the permission can still trigger the action.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">The "Proxy" Attack</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Can an app steal data from
+                                an implicit intent "Return Value"?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Use <code
+                                    class="bg-gray-50 px-1 rounded text-xs">startActivityForResult</code> with an
+                                implicit intent. Have the Attacker app "return" malicious data instead of what the user
+                                expected. Does the Victim app get confused?</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#FFF3E0;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 text-orange-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">The `exported` flag audit</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How many activities in your
+                                app <em>actually</em> need to be exported?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Audit 3 student apps from last
+                                semester (or popular open-source apps). Count how many activities have <code
+                                    class="bg-gray-50 px-1 rounded text-xs">exported="true"</code>. Are any of them
+                                "private" internal screens unnecessarily revealed to other apps?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Vulnerability Pattern Matching</h4>
+                            <p class="text-sm text-gray-600">Instead of building apps, use a tool like
+                                <strong>"ASET"</strong> or search for <strong>"Android Statical Analysis tools"</strong>
+                                to scan open-source apps on GitHub. Can you find examples of insecure implicit intents
+                                in the wild?</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Android 12 Change Analysis</h4>
+                            <p class="text-sm text-gray-600">Focus on <strong>Literature Review</strong>: Compare the
+                                security requirements of Android 11 vs. Android 12. Write about why Google made the
+                                change to require <code class="bg-gray-50 px-1 rounded text-xs">android:exported</code>
+                                and how many "leaks" this likely prevented.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Screenshot of the "App Chooser" with a suspicious-looking app in the list</li>
+                                <li>Diagram showing an intent being "intercepted" mid-air by a third-party app</li>
+                                <li>Side-by-side Manifest snippets (Exported=True vs. Exported=False)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">💡 Key Takeaway</h4>
+                            <p class="text-sm text-gray-600">Your conclusion should be clear: **"Use Explicit Intents
+                                for anything internal. Set exported=false by default."** This simple rule prevents 90%
+                                of intent-based security issues.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Wait, I thought Implicit
+                                Intents were GOOD for sharing things?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">They ARE good for sharing with <em>external</em> apps
+                                (like sharing an image to Instagram). But you should never use them to send sensitive
+                                data *internal* to your own app. If it's internal to your app, always go Explicit.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"What if I need another app to
+                                open my file?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">In that case, use an Implicit intent, but use a
+                                <strong>FileProvider</strong> to grant temporary read permissions for <em>only that
+                                    specific file</em>. Don't just broadcast the raw file path!</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Understand the difference between Explicit
+                                    and Implicit intents</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Research the `android:exported` flag in the
+                                    manifest</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Identify the security risks of data
+                                    exposure in Intents</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Create a demonstration of "Intent
+                                    Hijacking"</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Audit your app manifest for unexported
+                                    components</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Explain why Android 12 made the exported
+                                    flag mandatory</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

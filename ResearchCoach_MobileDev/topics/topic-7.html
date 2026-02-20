@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 7: Material Design 3 Guidelines — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for exploring Material Design 3 (Material You) and its impact on user experience in Android apps.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">07</span>
+                <span class="category-badge badge-ux" style="background:rgba(255,255,255,0.15);color:#fff;">UX &
+                    Design</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Material Design 3:<br>Personalizing the UI
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Investigate "Material You" — Google's most personal design system. You'll research how dynamic color,
+                expressive shapes, and improved accessibility change how users feel about their apps.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Design isn't just about looking "pretty" — it's about
+                        efficiency and emotion. <strong>Material Design 3 (MD3)</strong>, introduces "Dynamic Color,"
+                        where your app's entire theme adapts to the user's wallpaper. This makes the phone feel like it
+                        belongs to the user.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you'll act as a UX Researcher. You
+                        will build a prototype using MD3 components and survey users to see if they find it more
+                        "friendly" or "accessible" than the older Material 2 style. You'll even test if they can find
+                        buttons faster in the new layout!</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Evaluate how Material Design 3's expressive components and
+                            dynamic color system affect user sentiment and cognitive load.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A "Before and After" visual comparison of MD2 vs MD3</li>
+                        <li>Survey data on user "Emotional Response" (e.g., Friendly, Playful, Professional)</li>
+                        <li>Results from a "Speed Test" — how fast can users identify buttons?</li>
+                        <li>A screenshot of the **Material Theme Builder** generated palette</li>
+                        <li>Observations on how accessibility (contrast) is handled automatically</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">MD3 is a huge system. Focus on the "Expressive" and
+                        "Personal" pillars for your research.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Material Design Site
+                            </h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://m3.material.io/" class="text-tru-secondary hover:underline"
+                                        target="_blank">Material 3 Home</a> — The official spec and guidelines</li>
+                                <li><a href="https://m3.material.io/styles/color/dynamic-color/overview"
+                                        class="text-tru-secondary hover:underline" target="_blank">Dynamic Color
+                                        Overview</a> — How the algorithm works</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🌈 Design Tools</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://material-foundation.github.io/material-theme-builder/"
+                                        class="text-tru-secondary hover:underline" target="_blank">Material Theme
+                                        Builder</a> — Generate a theme from any image or color</li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Look for the <strong>"Material 3 Expressive
+                                    Design"</strong> blog posts. Google claims users find MD3 "4 times faster" to
+                                navigate!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Material You</h4>
+                            <p class="text-sm text-gray-600">The design philosophy behind MD3. It focuses on
+                                individuality, accessibility, and the idea that the user and device should "speak the
+                                same language."</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Dynamic Color</h4>
+                            <p class="text-sm text-gray-600">A feature that extracts primary colors from a user's
+                                wallpaper and applies them as a "Scheme" throughout the app (buttons, text,
+                                backgrounds).</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">HCT Color Space</h4>
+                            <p class="text-sm text-gray-600">Hue, Chroma, Tone. Unlike RGB, HCT ensures that colors
+                                always have enough contrast to be readable, no matter what color is chosen.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Tonal Palettes</h4>
+                            <p class="text-sm text-gray-600">A range of colors from dark to light based on one single
+                                hue. MD3 uses these to create harmonized "Surfaces" and "Primary" colors.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Learn to implement and test the MD3 design system.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Build a "Core" App Layout</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a simple Android app with common elements:
+                                    a top app bar, a Floating Action Button (FAB), a few text fields, and a list of
+                                    items.</p>
+                                <div class="callout callout-info">
+                                    <div class="callout-icon">💡</div>
+                                    <div><strong>Note:</strong> You'll need to use the <code
+                                            class="bg-gray-50 px-1 rounded text-xs">com.google.android.material:material:1.5.0</code>
+                                        (or newer) library in your <code
+                                            class="bg-gray-50 px-1 rounded text-xs">build.gradle</code>.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement Dynamic Color</h4>
+                                <p class="text-sm text-gray-600 mb-3">Add the code to enable Dynamic Color in your
+                                    Application class or Activity. This is the "Magic" step that makes the research
+                                    interesting.</p>
+                                <div class="code-block"><span class="code-label">Kotlin</span>
+                                    <pre>// Inside your onCreate
+DynamicColors.applyToActivitiesIfAvailable(this)</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Create the "Comparison" Prototypes</h4>
+                                <p class="text-sm text-gray-600 mb-2">Take screenshots of your app with twoDifferent
+                                    "Wallpaper" themes. Capture how the colors change. You should also create a
+                                    "Control" version using the old Material 2 (classic button shapes, fixed blue
+                                    color).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Run the "Sentiment" Survey</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a Google Form showing the MD2 and MD3
+                                    screenshots. Ask participants to rate each on a scale of 1-5 for qualities like:</p>
+                                <ul class="text-xs text-gray-500 list-disc ml-4">
+                                    <li>"How organized does this look?"</li>
+                                    <li>"How friendly and approachable is this app?"</li>
+                                    <li>"Would you enjoy using this app daily?"</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Color Audit: Contrast Ratios</h4>
+                                <p class="text-sm text-gray-600 mb-2">Use the **Material Theme Builder** to export a
+                                    palette for a very "Bright" wallpaper. Use an online contrast checker (like WebAIM)
+                                    to see if the generated text is still accessible on top of those background colors.
+                                    **This is a key research finding!**</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Blink" Detection Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Are MD3 buttons easier to
+                                find than MD2?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Show a screenshot for exactly 1
+                                second. Ask the user "What was the main action button?". Repeat with MD2 and MD3. Track
+                                accuracy and "First Impression" speed.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Emotional Attribute Mapping</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> What "vibe" does MD3 give
+                                off compared to MD2?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Give participants a list of 10
+                                words (Playful, Stiff, Modern, Outdated, Reliable, etc.). Ask them to pick 3 words that
+                                describe the MD3 design. Compile the results into a Word Cloud for your poster.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Dynamic Color Contrast Audit</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does Dynamic Color ever
+                                "Break" accessibility?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Use 5 very different wallpapers
+                                (Solid Red, Forest, Dark City, White Beach). Measure the "Luminance" or contrast ratio
+                                of Title Text vs Background in each generated theme. Prove if MD3's algorithm is truly
+                                foolproof.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Material Design History Audit</h4>
+                            <p class="text-sm text-gray-600">Instead of a user survey, perform a <strong>Literature &
+                                    visual review</strong>. Find the original "Material 1" specs from 2014 and compare
+                                them to M3. Document how the philosophy shifted from "Tangible Paper" to "Expressive
+                                You."</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Adaptive Layout Analysis</h4>
+                            <p class="text-sm text-gray-600">MD3 also focuses on tablets and foldables. If you have an
+                                emulator for a <strong>Pixel Fold</strong>, research how MD3 components (like Navigation
+                                Rails) automatically expand. This is a "Form Factor" research angle.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>A "Venn Diagram" of design attributes (MD2 vs MD3)</li>
+                                <li>Grid showing 4 different wallpapers and the 4 generated app themes</li>
+                                <li>Bar chart of survey sentiment (e.g., "Approachable score: 4.8 vs 3.2")</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Use words like "Cognitive Load" and "Visual Information
+                                Density." Explain that MD3 isn't just about colors — it's about making the app easier
+                                for the human brain to process.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Wait, my dynamic colors aren't
+                                working in the emulator!"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Dynamic color requires **Android 12 (API 31) or
+                                higher**. Also, ensure you have set a wallpaper on the device. Modern emulators support
+                                this, but older ones might just stay on the "Baseline" (default) color.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Does MD3 mean I can't use my
+                                brand colors?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Nope! You can offer users a choice. Most apps use
+                                Dynamic Color as the *default* but allow users to toggle it off to see the app's
+                                original "Brand" colors. This is another great research question: "Do users prefer brand
+                                colors or wallpaper colors?"</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Explore the M3 official component library
+                                </p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Use Material Theme Builder to generate a
+                                    test palette</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement one screen with MD3 components
+                                    (TopBar, FAB, Cards)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Activate DynamicColors API in your Kotlin
+                                    code</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Compare screenshots across 3 different
+                                    wallpapers</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Collect 10+ user responses on your
+                                    "Sentiment" survey</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

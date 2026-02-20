@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 11: Permissions Model Evolution — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing Install-time vs. Runtime permissions in Android development.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">11</span>
+                <span class="category-badge badge-security"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Security</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Permissions Evolution: <br>Privacy vs. Friction
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Android once let apps take whatever they wanted at installation. Those days are gone. Research the shift
+                to "Runtime Permissions," measure the "User Friction" it creates, and discover how to ask for sensitive
+                data without scaring users away.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Before Android 6.0 (Marshmallow), permissions were
+                        "Install-Time." If you wanted a flashlight app, you had to agree to let it read your contacts
+                        *before* you could even download it. Today, Android uses **Runtime Permissions**, where the app
+                        must ask for permission only when it actually needs it.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you will explore this evolution.
+                        You'll investigate "Dangerous" vs. "Normal" permissions, analyze the technical implementation of
+                        runtime checks, and conduct a "User Friction" study to see how many users click "Deny" when they
+                        aren't given a good reason for a request.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Compare the security benefits of Runtime Permissions
+                            against the potential drop in user engagement caused by multiple "Allow/Deny" popups.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A "Timeline of Privacy" showing major Android permission changes</li>
+                        <li>Code comparison: Declaring in Manifest vs. Requesting at Runtime</li>
+                        <li>Flowchart of the **Check → Request → Handle** logic</li>
+                        <li>Survey data: "Which permission request is most suspicious to you?"</li>
+                        <li>Screenshots of **Permission Rationale** dialogs (best practices)</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Study how Google has tightened security over the last
+                        decade.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Official Documentation</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/guide/topics/permissions/overview"
+                                        class="text-tru-secondary hover:underline" target="_blank">Permissions
+                                        Overview</a> — The definitive guide</li>
+                                <li><a href="https://developer.android.com/about/versions/marshmallow/android-6.0-changes#behavior-runtime-permissions"
+                                        class="text-tru-secondary hover:underline" target="_blank">Introduction of
+                                        Runtime Permissions</a> — History of the change</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔍 Comparative Research</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Android Dangerous vs Normal permissions list 2024"</em></li>
+                                <li>Search: <em>"Impact of runtime permissions on user uninstall rates"</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Look up "One-time permissions" introduced in Android 11.
+                                It's the latest step in this evolution!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Normal Permissions</h4>
+                            <p class="text-sm text-gray-600">Permissions that don't pose a risk to user privacy (e.g.,
+                                Internet). They are still declared in the Manifest but granted automatically at install
+                                time.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Dangerous Permissions</h4>
+                            <p class="text-sm text-gray-600">Permissions that give access to sensitive data (e.g.,
+                                Camera, Contacts, Location). These require explicit "Allow" from the user at runtime.
+                            </p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Permission Rationale</h4>
+                            <p class="text-sm text-gray-600">A custom dialog shown by the developer *before* the system
+                                popup, explaining *why* the permission is needed. This significantly reduces "Deny"
+                                rates.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Permission Groups</h4>
+                            <p class="text-gray-600 text-sm">Permissions are bundled into groups (e.g., `READ_CONTACTS`
+                                and `WRITE_CONTACTS` are in the `CONTACTS` group). Granting one often grants the rest in
+                                that group.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Follow these steps to build and test a modern
+                        permission system.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Identify the "Dangerous" Target</h4>
+                                <p class="text-sm text-gray-600 mb-2">Choose one functionality that requires permission
+                                    (e.g., the **Camera** or **Location**). Add the declaration to your
+                                    `AndroidManifest.xml` first.</p>
+                                <div class="bg-gray-100 p-3 rounded-lg font-mono text-xs text-tru-primary">
+                                    &lt;uses-permission android:name="android.permission.CAMERA" /&gt;
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Implement the "Runtime Check" Logic</h4>
+                                <p class="text-sm text-gray-600 mb-3">In your Activity, implement the modern logic. You
+                                    must check if you have it, and if not, request it.</p>
+                                <div
+                                    class="bg-gray-100 p-3 rounded-lg font-mono text-xs text-tru-primary overflow-x-auto">
+                                    <pre>
+if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) 
+    != PackageManager.PERMISSION_GRANTED) {
+    // Request logic goes here
+}
+</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Use the Permissions Launcher</h4>
+                                <p class="text-sm text-gray-600 mb-2">Modern Android (API 30+) uses the
+                                    `ActivityResultLauncher`. Implement this to handle the result without the old
+                                    `onRequestPermissionsResult` mess.</p>
+                                <div
+                                    class="bg-gray-100 p-3 rounded-lg font-mono text-xs text-tru-primary overflow-x-auto">
+                                    <pre>
+val requestPermissionLauncher = registerForActivityResult(
+    RequestPermission()
+) { isGranted: Boolean ->
+    if (isGranted) { /* Open Camera */ } else { /* Error message */ }
+}
+</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Test the "Kill Switch"</h4>
+                                <p class="text-sm text-gray-600 mb-2">Android has a security feature: if you revoke a
+                                    permission in Settings while the app is open, the system <strong>kills the app
+                                        process immediately</strong>. Test this! Record what happens to the app state
+                                    when you manually revoke permission.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Simulate the "Don't Ask Again" Scenario
+                                </h4>
+                                <p class="text-sm text-gray-600 mb-2">What happens after the user clicks "Deny" twice?
+                                    The system stops showing the popup. Research the code for
+                                    `shouldShowRequestPermissionRationale()` and record how you handle a user who is
+                                    "locked out" of a feature.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Rationale" Effect Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Do users click "Allow" more
+                                often if you explain why first?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Create two versions of your app.
+                                Version 1 trigger the system popup immediately. Version 2 shows a custom "We need camera
+                                for QR scanning" dialog first. Test with 5 people. Record the conversion rate.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Permission "Bundling" Study</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does asking for 3
+                                permissions at once cause higher uninstalls?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Research the "Scare Factor" of
+                                different permission combinations (e.g., Camera + Contacts + Location). Conduct a survey
+                                asking people which combination would make them delete the app.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">The "Background Location" Audit</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How hard is it to get
+                                "Allow All The Time" location access?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> In Android 11+, background
+                                location requires a separate manual step in the device settings. Document the "Visual
+                                Maze" a user has to walk through to enable this. This is a great "UX Obstacle" case
+                                study.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Zero-Permission APIs</h4>
+                            <p class="text-sm text-gray-600">Sometimes you don't even *need* the permission. For
+                                example, using the **Action_Image_Capture Intent** lets the user's camera app take the
+                                photo and give it back to you. You get the photo, but you never ask for camera
+                                permission! Research these "Intent-based" workarounds.</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Privacy Sandbox</h4>
+                            <p class="text-sm text-gray-600">Research the upcoming **Android Privacy Sandbox**. It aims
+                                to replace some permissions (like ID tracking) with anonymous interest-based buckets.
+                                How will this change the "Permissions" section in tomorrow's Play Store?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Timeline: Install-time → Runtime → One-time</li>
+                                <li>Pie chart: "User reasons for denying permissions"</li>
+                                <li>Comparison table: "Direct Request" vs. "Rationale Request"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Focus on the word **"Transparency."** Explain that your
+                                research shows that trust is built when an app is honest about why it needs sensitive
+                                data.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can't I just ask for everything
+                                at the start of the app?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Technically yes, but users hate it. It's called
+                                **"Permission Spamming."** Google's Play Store policies actually discourage this, and it
+                                often results in immediate app uninstalls.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"What if I forget to check
+                                permission and just use the feature?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">The app will crash with a `SecurityException`. In your
+                                research, you should intentionally cause one of these crashes to see the stack trace and
+                                learn what it looks like!</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Declare one dangerous permission in
+                                    AndroidManifest.xml</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement the Runtime check using
+                                    `ContextCompat`</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Handle the `ActivityResultLauncher`
+                                    callback (Granted vs Denied)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement a "Rationale" dialog for the
+                                    second request attempt</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Document the "App Kill" behavior when
+                                    revoking permissions in Settings</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Survey 3-5 users on their "Trust Score" for
+                                    different permission requests</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

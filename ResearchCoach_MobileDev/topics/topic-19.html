@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 19: Compilation Patterns: AOT vs. JIT — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for understanding AOT and JIT compilation in the Android Runtime (ART).">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">19</span>
+                <span class="category-badge badge-performance"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Performance</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Binary Speed:<br>AOT vs. JIT Compilation
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                How does Android turn code into action? Research the evolution of the Android Runtime (ART) and the
+                delicate balance between fast app installation and lightning-fast runtime performance.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">When you write code in Kotlin or Java, the Android
+                        phone doesn't "read" your text files directly. It first translates them into machine code that
+                        the processor understands. This process is called **Compilation**. Historically, Android
+                        developers have fought a war between two methods: **JIT (Just-In-Time)** and **AOT
+                        (Ahead-Of-Time)**.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">JIT is fast to install but can make the app "stutter"
+                        during the first run as it compiles code on the fly. AOT makes the app run perfectly from the
+                        start but makes installation painfully slow. Modern Android uses a sophisticated hybrid called
+                        **Profile-Guided Optimization (PGO)**. In this research, you will explore this evolution and
+                        measure the "Cold Start" impact of compilation patterns.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Understand the trade-offs between AOT and JIT compilation
+                            and quantify how self-optimizing runtimes (like ART) improve app performance over time.
+                        </div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>The **Compilation Timeline**: From Dalvik (JIT) to ART (AOT) to Hybrid.</li>
+                        <li>A **Cold Start Analysis**: Does an app get faster the more you use it? (Spoiler: Yes!)</li>
+                        <li>Visualizing **Cloud Profiles**: How Google uses other users' data to optimize *your* app.
+                        </li>
+                        <li>Research on **DEX (Dalvik Executable)** file structures.</li>
+                        <li>Data comparison: Install Time vs. Initial Launch Speed vs. Subsequent Launch Speed.</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Learn the history of why Android used to be "laggy"
+                        compared to iOS.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 The Technical Foundation</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://source.android.com/docs/core/runtime"
+                                        class="text-tru-secondary hover:underline" target="_blank">Introduction to
+                                        ART</a> — How the runtime works</li>
+                                <li><a href="https://source.android.com/docs/core/runtime/jit-compiler"
+                                        class="text-tru-secondary hover:underline" target="_blank">JIT Compilation in
+                                        ART</a></li>
+                                <li><a href="https://android-developers.googleblog.com/2019/04/improving-app-performance-with-art.html"
+                                        class="text-tru-secondary hover:underline" target="_blank">Improving Performance
+                                        with ART Profiles</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔍 Key Historical Search Terms</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Dalvik vs ART architecture comparison"</em></li>
+                                <li>Search: <em>"Android dex2oat tool explanation"</em></li>
+                                <li>Search: <em>"What is Profile-Guided Optimization in Android?"</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Study the change introduced in **Android 7.0 (Nougat)**.
+                                It introduced the hybrid JIT/AOT model that solved the "half-hour install" problem of
+                                the early AOT days.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">JIT (Just-In-Time)</h4>
+                            <p class="text-sm text-gray-600">The compiler translates code **while the app is running**.
+                                It's fast to install but consumes extra CPU and battery during execution, which can lead
+                                to "Jank."</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">AOT (Ahead-Of-Time)</h4>
+                            <p class="text-sm text-gray-600">The compiler translates the entire app **during
+                                installation**. This ensures maximum speed during use but results in massive
+                                installation times and larger binary sizes.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">ART (Android Runtime)</h4>
+                            <p class="text-sm text-gray-600">The modern execution environment for Android. It uses a
+                                hybrid approach: JIT results are "profiled" and then compiled via AOT in the background
+                                while the phone is charging.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Baseline Profiles</h4>
+                            <p class="text-gray-600 text-sm">A list of the most important code paths provided by the
+                                developer. This tells ART which parts to AOT-compile immediately during installation to
+                                prevent that first-run lag.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Investigate the "Self-Optimizing" behavior of your
+                        Android device.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Select a "Complex" App</h4>
+                                <p class="text-sm text-gray-600 mb-2">Choose an app from the Play Store that you haven't
+                                    used recently (or clear its cache/data). This ensures you are starting from a "Cold"
+                                    compilation state.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Measure "Cold Start" Latency</h4>
+                                <p class="text-sm text-gray-600 mb-2">Force-stop the app. Open it and use a stopwatch
+                                    (or your eyes) to measure how long it takes to reach the main interactive screen.
+                                    Record any stuttering or frame drops during the first 30 seconds of use.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Training" Phase</h4>
+                                <p class="text-sm text-gray-600 mb-2">Open and close the app 10 times. Navigate through
+                                    all the menus. This allows the JIT profiler to learn which parts of the code are
+                                    "Hot" (used frequently).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Simulate Background AOT</h4>
+                                <p class="text-sm text-gray-600 mb-2">Normally, Android compiles the "Hot" code
+                                    overnight. You can force this using **ADB (Android Debug Bridge)** command to speed
+                                    up your research:</p>
+                                <div class="bg-gray-100 p-3 rounded-lg font-mono text-xs text-tru-primary">
+                                    <pre>adb shell cmd package compile -m speed-profile [package_name]</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Measure "Warm Start" Efficiency</h4>
+                                <p class="text-sm text-gray-600 mb-2">Launch the app again. Is the startup faster? Does
+                                    the scrolling feel smoother? Compare the "Cold" vs "Warm" metrics. This is your
+                                    primary data for the poster.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Battery Burn" Audit</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does background compilation
+                                drain your battery?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Research the system conditions
+                                required for background AOT compilation (usually: Device Idle + Charging + Battery >
+                                90%). Explain why these constraints exist.</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Install Time vs. Run Speed Chart</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How much longer would an
+                                app take to install if we went back to 100% AOT?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Compare historical data from
+                                Android 5.0 (Full AOT) vs Android 14 (Hybrid). Create a bar chart showing "Install
+                                Friction" vs "Execution Quality."</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Baseline Profile Research</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Can developers "help" the
+                                compiler?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Research how modern Android
+                                libraries (like Jetpack) include "Baseline Profiles." Explain how this allows an app to
+                                be "AOT-Fast" on the very first launch without the long install time.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Cloud Profiles</h4>
+                            <p class="text-sm text-gray-600">Google Play now collects "Hot Path" data from users who
+                                already have the app. It then bundles this profile with the app for *new* users.
+                                Research how this "Collaborative Compilation" works.</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Interpretative Mode</h4>
+                            <p class="text-sm text-gray-600">What happens when the phone is too hot to compile? Research
+                                "Interpreter" mode—the slowest but safest execution path—and when Android resorts to
+                                using it.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>A "Cold Start" vs. "Warm Start" latency bar chart</li>
+                                <li>A diagram showing the hybrid JIT/AOT lifecycle</li>
+                                <li>The ART mascot vs. the Dalvik mascot (history is fun!)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Focus on **User Retention**. Explain that a 1-second delay
+                                in app startup can cause a 20% drop in user engagement. Compilation isn't just for
+                                geeks—it's for business!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Does AOT always make things
+                                faster?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Usually, yes. However, AOT code takes up more **disk
+                                space**. If your device is almost full, the OS might delete AOT files to save room,
+                                making your app slow again. This is called "Profile Purgatory!"</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can I disable JIT for my app?"
+                            </summary>
+                            <p class="text-sm text-gray-600 mt-3">You can't easily disable it for end-users, but you can
+                                force-compile your app during development to see how it performs under perfect
+                                conditions.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"What is a .vdex file?"
+                            </summary>
+                            <p class="text-sm text-gray-600 mt-3">It stands for "Verified DEX." It contains verified
+                                code that the JIT doesn't have to check again, speeding up execution. It's like a
+                                "Pre-checked" pass at an airport security line.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="checkbox-container content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Research the historical transition from Dalvik
+                                (JIT) to ART (AOT)</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Record "Cold Start" launch time for a fresh app
+                            </p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Use the app extensively to "train" the JIT
+                                profiler</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box)</div><p class=" text-sm font-medium text-gray-700">Force
+                                background AOT compilation using an ADB command</p>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checklist-box"></div>
+                                <p class="text-sm font-medium text-gray-700">Measure and graph the "Warm Start"
+                                    performance improvement</p>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checklist-box"></div>
+                                <p class="text-sm font-medium text-gray-700">Identify the trade-offs (Disk Space vs. CPU
+                                    usage) for each method</p>
+                            </div>
+                            <div class="checklist-item">
+                                <div class="checklist-box"></div>
+                                <p class="text-sm font-medium text-gray-700">Draw a flowchart of the hybrid JIT/AOT
+                                    process for your poster</p>
+                            </div>
+                        </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

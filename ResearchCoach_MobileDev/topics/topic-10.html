@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 10: Activity vs. Fragment Architecture — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for comparing Single Activity vs. Multi Activity architectures in Android applications.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">10</span>
+                <span class="category-badge badge-architecture"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Architecture</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Activity vs. Fragment:<br>The Navigation Dilemma
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                Should your app have ten "Activities" or just one? You'll research the modern "Single Activity"
+                architecture. Measure memory footprint, visualize the "Back Stack," and discover why Google recommends
+                Fragments for navigation.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">In the early days of Android, every single screen in
+                        an app was a new **Activity**. But launching a new Activity is "heavy" on the system — it takes
+                        time and consumes more RAM. Today, most apps use a **Single Activity Architecture**, where one
+                        main activity stays alive and swaps out smaller pieces of UI called **Fragments**.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you'll build two versions of the
+                        same app: one using "Multi-Activity" and one using "Single-Activity + Fragments." You'll use the
+                        **Memory Profiler** to see which one uses more RAM and analyze how much easier it is to share
+                        data (like a user's login) when you only have one activity.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Quantify the difference in memory consumption and
+                            navigation transition speed between Single-Activity and Multi-Activity patterns.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A "Memory Profile" graph showing the RAM spikes during screen transitions</li>
+                        <li>A visualization of the **"Back Stack"** for both architectures</li>
+                        <li>A comparison of "Data Sharing" code (Intent extras vs. Shared ViewModel)</li>
+                        <li>A screenshot of the **Jetpack Navigation Graph** visual editor</li>
+                        <li>Observations on "Screen Transition" smoothness (Qualitative)</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Understand the history and evolution of Android
+                        navigation.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 Google Architectural
+                                Recommendations</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/guide/navigation/navigation-principles"
+                                        class="text-tru-secondary hover:underline" target="_blank">Principles of
+                                        Navigation</a> — Google's "Golden Rules"</li>
+                                <li><a href="https://developer.android.com/guide/navigation"
+                                        class="text-tru-secondary hover:underline" target="_blank">Jetpack Navigation
+                                        Component</a> — The modern tool for fragments</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🗺️ Navigation History</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"Single Activity vs Multiple Activity Android 2024"</em></li>
+                                <li>Search: <em>"Android Fragment transactions vs Intent performance"</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Research Tip:</strong> Watch the Google I/O 2018 talk <strong>"Single Activity:
+                                    Why, When, and How"</strong>. It's the moment Google officially changed their mind
+                                about Activities!</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Back Stack</h4>
+                            <p class="text-sm text-gray-600">The "History" of screens you've visited. When you hit the
+                                "Back" button, the system "Pops" the current screen off the stack to show the previous
+                                one.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Fragment Transaction</h4>
+                            <p class="text-sm text-gray-600">The process of swapping one Fragment for another. Unlike
+                                starting an Activity, this happens inside the same "Context" and is much lighter.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Navigation Graph</h4>
+                            <p class="text-sm text-gray-600">An XML file that maps out all your app's screens and the
+                                "Actions" (arrows) that connect them. It makes complex flow easy to visualize.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Context Sharing</h4>
+                            <p class="text-sm text-gray-600">The ability for multiple fragments to "see" the same data.
+                                By sharing a `ViewModel` with the activity, you can pass info without using complex
+                                `Intent` extras.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Learn to compare the performance and architecture of
+                        both navigation styles.</p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Build a "3-Screen" Multi-Activity App</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create an app with three activities: `Login`,
+                                    `Home`, and `Profile`. Use <code
+                                        class="bg-gray-100 px-1 rounded text-xs">Intent(this, HomeActivity::class.java)</code>
+                                    to navigate between them.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Build a "3-Screen" Single Activity App</h4>
+                                <p class="text-sm text-gray-600 mb-3">Create one Activity with a <code
+                                        class="bg-gray-50 px-1 rounded text-xs">FragmentContainerView</code>. Use the
+                                    **Navigation Component** (nav_graph.xml) to handle the swaps between
+                                    `LoginFragment`, `HomeFragment`, and `ProfileFragment`.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Measure the "Memory Spike"</h4>
+                                <ol class="text-sm text-gray-600 space-y-2 ml-4 list-decimal">
+                                    <li>In Android Studio, click **View → Tool Windows → App Inspection**.</li>
+                                    <li>Select your app and open the **Memory Profiler**.</li>
+                                    <li>Rapidly navigate between screens in the Multi-Activity version. **Record the RAM
+                                        usage peak.**</li>
+                                    <li>Restart and do the same in the Single Activity version. You'll likely see a
+                                        "Flatter" line, as the Activity isn't being recreated!</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Compare Data Sharing Code</h4>
+                                <p class="text-sm text-gray-600 mb-2">Try to pass a "Search Query" from Screen 1 to
+                                    Screen 3. Document the code needed: </p>
+                                <ul class="text-xs text-gray-500 list-disc ml-4">
+                                    <li>**Multi-Activity:** Needs `Intent.putExtra()` passed over and over through ہر
+                                        Activity.</li>
+                                    <li>**Single Activity:** Both Fragments just look at the same `SharedViewModel`.
+                                        **Screenshot this code difference!**</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Back Stack" Audit</h4>
+                                <p class="text-sm text-gray-600 mb-2">Navigate: A → B → C. Then press Back. Does the app
+                                    return to the state you expected? In the Navigation Component, you can see this
+                                    stack live in the **Layout Inspector** under the "Navigation" section. **Screenshot
+                                    this stack!**</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Context Overhead" Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How much RAM does a "Blank"
+                                Activity really use?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Build an app that launches 10
+                                identical empty Activities. Record total RAM. Build another that launches 10 identical
+                                empty Fragments. The difference is the "Activity Overhead."</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">Transition Jank Measurement</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Are Fragment transitions
+                                smoother than Activity transitions?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Use the **"Display GPU
+                                Rendering"** tool in Developer Options. Watch the "Blue Bars" as you switch screens. If
+                                the bar crosses the "Green Line," it means you dropped a frame. Which architecture drops
+                                fewer frames?</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">Boilerplate Count: XML vs. Kotlin</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Which architecture requires
+                                more "Manifest" work?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Every Activity *must* be declared
+                                in the `AndroidManifest.xml`. Fragments do not. Count the lines in your Manifest for
+                                both versions. This is a "Maintainability" finding for your poster.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">The Compose Challenger</h4>
+                            <p class="text-sm text-gray-600">Jetpack Compose doesn't use Fragments *or* multiple
+                                Activities; it uses "Composables." Research <strong>Compose Navigation</strong>. If you
+                                use Compose, can you do the research without Fragments at all? This is the most modern
+                                research angle possible!</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Architecture Audit: Navigation Components
+                            </h4>
+                            <p class="text-sm text-gray-600">Instead of building two apps, perform an
+                                <strong>Audit</strong> of a complex open-source app (like the Google I/O app). Look at
+                                their `nav_graph.xml`. Map out how they handle "Deep Links" from outside the app. Does
+                                Single Activity make Deep Linking harder or easier?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>Memory Profiler comparison graphs</li>
+                                <li>Diagram of your `nav_graph.xml` (the visual flow)</li>
+                                <li>Side-by-side table: "Activity Lifecycle" vs. "Fragment Lifecycle"</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Use words like **"Resource Efficiency,"** **"State
+                                Management,"** and **"Modularization."** Explain that your research helps a developer
+                                build an app that runs fast even on low-budget devices.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Wait, I thought Fragments were
+                                dead? People say they are complex."</summary>
+                            <p class="text-sm text-gray-600 mt-3">Fragments had a bad reputation for a few years because
+                                their lifecycle is complicated. But the **Jetpack Navigation Component** fixed almost
+                                all of those issues by handling the "Transactions" for you. They are very much the
+                                industry standard now!</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"What happens if my one Activity
+                                crashes?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Yes, if the single activity crashes, the whole app
+                                closes. In a multi-activity app, sometimes the OS can restart you at a specific
+                                activity. However, a modern app should have <strong>stable</strong> navigation logic,
+                                making this a secondary concern compared to the performance benefits.</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Set up a base project with 2+ Activities
+                                    and 2+ Fragments</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement navigation using Intents
+                                    (Multi-Activity)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Implement the Navigation Component
+                                    (nav_graph.xml)</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Record RAM usage peaks in the Memory
+                                    Profiler for both</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Visualize the Back Stack behavior after 5
+                                    rapid clicks</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">Compare the lines of code needed for "Data
+                                    Passing" between screens</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

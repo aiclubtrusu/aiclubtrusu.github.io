@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic 18: Image Size Optimization — Research Coach</title>
+    <meta name="description"
+        content="Research methodology guide for optimizing images to reduce APK size and memory usage in Android.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['DM Sans', 'sans-serif'], serif: ['DM Serif Display', 'serif'] },
+                    colors: { tru: { primary: '#003C5C', 'primary-light': '#0A5A7C', secondary: '#00594C', 'secondary-light': '#007A68', accent: '#E8963E', 'accent-light': '#F0AE6A' } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="min-h-screen bg-gray-50">
+
+    <!-- HERO -->
+    <header class="topic-hero text-white">
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
+            <a href="../index.html" class="back-link mb-6 inline-flex">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to All Topics
+            </a>
+            <div class="flex items-center gap-3 mt-6 mb-4">
+                <span class="topic-number text-lg" style="background:rgba(255,255,255,0.2);">18</span>
+                <span class="category-badge badge-performance"
+                    style="background:rgba(255,255,255,0.15);color:#fff;">Performance</span>
+            </div>
+            <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl leading-tight mb-4">
+                Pixels and Payloads:<br>Image Optimization
+            </h1>
+            <p class="text-white/80 text-lg max-w-3xl leading-relaxed">
+                A single unoptimized image can double your app's size or crash it with an OutOfMemoryError. Research the
+                science of image compression, density scaling, and modern formats like WebP.
+            </p>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Sidebar -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <nav class="sidebar-nav sticky top-6 bg-white rounded-2xl border p-4 shadow-sm"
+                    style="border-color:var(--border-light);">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3 px-3">On This Page</h4>
+                    <a href="#overview" class="active">📋 Research Overview</a>
+                    <a href="#background">📚 Background Reading</a>
+                    <a href="#key-concepts">💡 Key Concepts</a>
+                    <a href="#methodology">🔬 Methodology</a>
+                    <a href="#experiments">🧪 Experiments</a>
+                    <a href="#alternatives">🔄 Alternative Approaches</a>
+                    <a href="#poster-tips">🎨 Poster Tips</a>
+                    <a href="#pitfalls">⚠️ Common Pitfalls</a>
+                    <a href="#checklist">✅ Checklist</a>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <main class="flex-1 min-w-0">
+
+                <!-- OVERVIEW -->
+                <section id="overview" class="content-section animate-in">
+                    <h2>📋 Research Overview</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Images are usually the largest part of any Android
+                        app's APK file. However, many developers simply drag-and-drop raw high-resolution PNGs or JPEGs
+                        into their project without realizing the cost. This leads to massive download sizes and high
+                        memory usage, which can make apps feel slow or unstable on older devices.</p>
+                    <p class="text-gray-600 leading-relaxed mb-4">In this research, you will conduct an "Asset Audit."
+                        You'll compare different image formats, resolutions, and scaling strategies to find the "Sweet
+                        Spot" where image quality remains high but file size and memory footprint are minimized. You'll
+                        learn to use professional tools like **APK Analyzer** and **Android Profiler** to prove your
+                        findings with hard data.</p>
+
+                    <div class="callout callout-info">
+                        <div class="callout-icon">💡</div>
+                        <div><strong>Research Goal:</strong> Quantify the impact of image formats (PNG vs. WebP) and
+                            resolution scaling on APK size and runtime memory consumption.</div>
+                    </div>
+
+                    <h3>What Will Your Research Poster Show?</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-2">
+                        <li>A **Size Comparison Chart**: How much space did WebP save?</li>
+                        <li>**Memory Profile Graphs**: Total RAM usage when loading raw vs. optimized images.</li>
+                        <li>The **Quality vs. Size** trade-off: Examples of "visual transparency" at different
+                            compression levels.</li>
+                        <li>APK breakdown using **APK Analyzer** screenshots.</li>
+                        <li>Visualizing **VectorDrawables**: Resolution-independent icons vs. Raster counterparts.</li>
+                    </ul>
+                </section>
+
+                <!-- BACKGROUND -->
+                <section id="background" class="content-section animate-in">
+                    <h2>📚 Background Reading</h2>
+                    <p class="text-gray-600 leading-relaxed mb-4">Understand the difference between pixels on disk and
+                        pixels in memory.</p>
+
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">📖 The Official Docs</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li><a href="https://developer.android.com/topic/performance/reduce-apk-size"
+                                        class="text-tru-secondary hover:underline" target="_blank">Reduce APK Size</a> —
+                                    Official best practices</li>
+                                <li><a href="https://developer.android.com/studio/write/resource-manager"
+                                        class="text-tru-secondary hover:underline" target="_blank">Resource Manager
+                                        Guide</a> — Managing your assets</li>
+                                <li><a href="https://developer.android.com/topic/performance/graphics/load-bitmap"
+                                        class="text-tru-secondary hover:underline" target="_blank">Loading Large Bitmaps
+                                        Efficiently</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-4 border" style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary text-sm mb-1">🔍 Technical Insights</h4>
+                            <ul class="text-sm text-gray-600 space-y-1 ml-4 list-disc">
+                                <li>Search: <em>"WebP vs PNG vs SVG Android comparison"</em></li>
+                                <li>Search: <em>"Android drawable vs mipmap vs raw folders"</em></li>
+                            </ul>
+                        </div>
+
+                        <div class="callout callout-tip">
+                            <div class="callout-icon">📌</div>
+                            <div><strong>Pro Tip:</strong> An image that is 1MB on your hard drive can take up **10MB+
+                                of RAM** once it's decoded into a Bitmap in your app. Research "Bitmap Pixel Formats"
+                                (like ARGB_8888) to find out why.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- KEY CONCEPTS -->
+                <section id="key-concepts" class="content-section animate-in">
+                    <h2>💡 Key Concepts</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">WebP Format</h4>
+                            <p class="text-sm text-gray-600">A modern image format from Google that provides superior
+                                **lossless and lossy** compression for images on the web and Android. It can be 30%
+                                smaller than PNGs with the same quality.</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Screen Density (DPI)</h4>
+                            <p class="text-sm text-gray-600">Android devices have different pixel densities. You need to
+                                provide assets for `mdpi`, `hdpi`, `xhdpi`, etc., to ensure images look sharp without
+                                wasting pixels on lower-end screens.</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">VectorDrawable (SVG)</h4>
+                            <p class="text-sm text-gray-600">Instead of a grid of pixels, these use XML to define
+                                shapes. They scale to any size perfectly and take up almost zero space. Perfect for
+                                icons and logos!</p>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">Bitmap Decoding</h4>
+                            <p class="text-gray-600 text-sm">The process of turning a compressed file (like a JPEG) into
+                                a raw array of color values in RAM. This is where memory leaks and crashes usually
+                                happen.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- METHODOLOGY -->
+                <section id="methodology" class="content-section animate-in">
+                    <h2>🔬 Step-by-Step Methodology</h2>
+                    <p class="text-gray-600 leading-relaxed mb-6">Conduct a comparative analysis of asset efficiency.
+                    </p>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">1</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">The "Raw" Initial Build</h4>
+                                <p class="text-sm text-gray-600 mb-2">Find 5 high-resolution photographs (4K PNGs).
+                                    Create an Android project and add them all to your `res/drawable` folder. Build the
+                                    APK and record its file size.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">2</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Analyze with APK Analyzer</h4>
+                                <p class="text-sm text-gray-600 mb-2">Go to **Build → Analyze APK...** in Android Studio
+                                    and select your APK. Drill down into the `res` folder to see exactly which images
+                                    are taking up the most space. Take a screenshot of the "Top Offenders."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">3</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">WebP Conversion Sprint</h4>
+                                <p class="text-sm text-gray-600 mb-2">Right-click your images in the `res/drawable`
+                                    folder and select **Convert to WebP...**. Choose "Lossy" at 75% quality. Re-build
+                                    the APK and compare the new size to the baseline in Step 1.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">4</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Memory Profiling</h4>
+                                <p class="text-sm text-gray-600 mb-2">Run your app on a device/emulator and open the
+                                    **Android Profiler (View → Tool Windows → Profiler)**. Click on the **Memory**
+                                    graph. Load your large images and watch the "Graphics" memory spike. Try this with
+                                    unoptimized vs. optimized assets.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="flex items-start gap-3">
+                            <span class="step-number">5</span>
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-2">Vector vs. Raster Icon Test</h4>
+                                <p class="text-sm text-gray-600 mb-2">Create a 512x512 PNG icon and a VectorDrawable
+                                    version of the same icon. Zoom in 500% on both in your layout editor. Record the
+                                    file size difference and the quality difference when scaled.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- EXPERIMENTS -->
+                <section id="experiments" class="content-section animate-in">
+                    <h2>🧪 Possible Experiments</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E8F5E9;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-700 font-bold text-sm">A</span>
+                                <h4 class="font-semibold text-gray-800">The "Resolution Overkill" Test</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> Does using a 4K image in a
+                                100x100 `ImageView` waste memory?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Display a huge image in a small
+                                container. Measure memory in the Profiler. Then, resize the image to exactly 100x100 and
+                                repeat. **Expect a massive difference!**</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#E3F2FD;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm">B</span>
+                                <h4 class="font-semibold text-gray-800">PNG vs. WebP Efficiency Map</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> At what quality percentage
+                                does WebP start looking "Bad"?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Convert the same image to WebP at
+                                100%, 80%, 50%, and 20% quality. Track the file size at each step. Create a visual scale
+                                for your poster showing the "Visual Transparency Point."</p>
+                        </div>
+
+                        <div class="bg-white rounded-xl border-2 p-5" style="border-color:#F3E5F5;">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span
+                                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold text-sm">C</span>
+                                <h4 class="font-semibold text-gray-800">The Adaptive Density Audit</h4>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>Question:</strong> How much space is wasted by
+                                including `xxxhdpi` assets for all devices?</p>
+                            <p class="text-sm text-gray-600"><strong>Method:</strong> Bundle high-res assets in the
+                                `drawable-nodpi` folder vs density-specific folders. Research the benefit of **Android
+                                App Bundles (.aab)** in solving this problem automatically.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ALTERNATIVES -->
+                <section id="alternatives" class="content-section animate-in">
+                    <h2>🔄 Alternative Approaches</h2>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">Network Dynamic Loading</h4>
+                            <p class="text-sm text-gray-600">Instead of bundling images inside the APK, research loading
+                                them from a URL using **Glide** or **Picasso**. Does this technically solve the APK size
+                                problem, or just move the problem to the user's data plan?</p>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-5 border"
+                            style="border-color:var(--border-light);">
+                            <h4 class="font-semibold text-tru-primary mb-2">R8 and ProGuard Resource Shrinking</h4>
+                            <p class="text-sm text-gray-600">Android Studio can automatically remove resources that you
+                                aren't actually using in code. Research enabling `shrinkResources true` in your
+                                `build.gradle` and measure the savings on a messy project.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- POSTER TIPS -->
+                <section id="poster-tips" class="content-section animate-in">
+                    <h2>🎨 Tips for Your Research Poster</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 rounded-xl p-5 border border-teal-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">📊 Essential Visuals</h4>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc ml-4">
+                                <li>The "Sunburst" chart from APK Analyzer</li>
+                                <li>The Profiler's Memory "Peak" when loading images</li>
+                                <li>Magnified "Lossy" artifacts vs "Clean" images</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 rounded-xl p-5 border border-amber-100">
+                            <h4 class="font-semibold text-tru-primary mb-2">✍️ Content Focus</h4>
+                            <p class="text-sm text-gray-600">Focus on **Resource Efficiency**. Explain that "Bigger
+                                isn't Better"—it's just more expensive for the user in terms of data usage and device
+                                battery life.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PITFALLS -->
+                <section id="pitfalls" class="content-section animate-in">
+                    <h2>⚠️ Common Pitfalls &amp; FAQ</h2>
+                    <div class="space-y-4">
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Why does my app crash when I
+                                scroll through a list of images?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">This is the classic **OutOfMemoryError**. You are
+                                likely decoding too many large Bitmaps at once. Research "Bitmap Pooling" and how
+                                library like Glide handles this for you automatically.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Can't I just use JPEGs for
+                                everything?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">JPEGs do not support **transparency (alpha
+                                channels)**. If your icon needs a transparent background, you must use PNG, WebP, or
+                                VectorDrawable. Also, JPEGs often have more "noise" around sharp text than WebP.</p>
+                        </details>
+                        <details class="bg-gray-50 rounded-xl border p-4" style="border-color:var(--border-light);">
+                            <summary class="font-semibold text-gray-700 cursor-pointer">"Is WebP supported on all
+                                Android versions?"</summary>
+                            <p class="text-sm text-gray-600 mt-3">Basic WebP is supported since Android 4.0, but
+                                Lossless/Transparent WebP requires Android 4.3+. Since 99%+ of devices are on much newer
+                                versions now, it is safe to use everywhere!</p>
+                        </details>
+                    </div>
+                </section>
+
+                <!-- CHECKLIST -->
+                <section id="checklist" class="checkbox-container content-section animate-in">
+                    <h2>✅ Research Checklist</h2>
+                    <div class="space-y-1">
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Find 5 large PNG images and create a baseline
+                                APK</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Audit the APK size using Build > Analyze APK
+                            </p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Convert all drawable assets to WebP (Lossy 75%)
+                            </p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Profile memory usage while loading optimized vs
+                                unoptimized assets</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Compare file size and zoom-quality of Vector vs
+                                Raster icons</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Enable Resource Shrinking and ProGuard to see
+                                final savings</p>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-box"></div>
+                            <p class="text-sm font-medium text-gray-700">Calculate the % reduction in total APK size for
+                                your poster report</p>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-tru-primary text-white/70 py-8 mt-8">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm"><a href="../index.html" class="text-white hover:text-tru-accent transition-colors">←
+                    Back to All Topics</a></div>
+            <div class="text-sm">Created by <span class="font-semibold text-white">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.sidebar-nav a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    const id = entry.target.id;
+                    const activeLink = document.querySelector(`.sidebar-nav a[href="#${id}"]`);
+                    if (activeLink) activeLink.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        sections.forEach(s => observer.observe(s));
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const id = link.getAttribute('href').substring(1);
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>
