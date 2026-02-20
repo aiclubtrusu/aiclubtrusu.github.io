@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Coach — COMP 2160 | Thompson Rivers University</title>
+    <meta name="description"
+        content="Research methodology guide for COMP 2160 Mobile App Development students at Thompson Rivers University. Select your topic and explore step-by-step research guidance.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                        serif: ['DM Serif Display', 'serif'],
+                    },
+                    colors: {
+                        tru: {
+                            primary: '#003C5C',
+                            'primary-light': '#0A5A7C',
+                            secondary: '#00594C',
+                            'secondary-light': '#007A68',
+                            accent: '#E8963E',
+                            'accent-light': '#F0AE6A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="min-h-screen">
+
+    <!-- ===== HERO SECTION ===== -->
+    <header class="hero-gradient text-white relative">
+        <!-- Floating particles -->
+        <div class="hero-particle"></div>
+        <div class="hero-particle"></div>
+        <div class="hero-particle"></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-28">
+            <div class="max-w-3xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="inline-block w-10 h-1 bg-white/40 rounded-full"></span>
+                    <span class="text-white/70 text-sm font-medium tracking-widest uppercase">COMP 2160 · Thompson
+                        Rivers University · Research Coaches</span>
+                </div>
+
+                <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
+                    Research Poster Project
+                </h1>
+
+                <p class="text-lg md:text-xl text-white/80 leading-relaxed max-w-2xl mb-10">
+                    Your friendly guide to research methodology for mobile app development. Select your topic below and
+                    follow step-by-step instructions to design experiments, collect data, and create a compelling
+                    research poster.
+                </p>
+
+                <!-- Search -->
+                <div class="relative max-w-md">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input type="text" id="search-input" class="search-input" placeholder="Search topics..."
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/10">
+                <div>
+                    <div class="text-3xl font-serif">19</div>
+                    <div class="text-sm text-white/60 mt-1">Research Topics</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-serif">4</div>
+                    <div class="text-sm text-white/60 mt-1">Students per Group</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-serif">1</div>
+                    <div class="text-sm text-white/60 mt-1">Research Poster</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== CATEGORY FILTERS ===== -->
+    <section class="max-w-6xl mx-auto px-6 -mt-6 relative z-20">
+        <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-wrap gap-2 items-center" id="filter-bar">
+            <span class="text-sm font-semibold text-gray-500 mr-2">Filter:</span>
+            <button class="filter-btn active" data-filter="all">All Topics</button>
+            <button class="filter-btn" data-filter="performance">⚡ Performance</button>
+            <button class="filter-btn" data-filter="ux">🎨 UX &amp; Design</button>
+            <button class="filter-btn" data-filter="architecture">🏗️ Architecture</button>
+            <button class="filter-btn" data-filter="security">🔒 Security</button>
+            <button class="filter-btn" data-filter="storage">💾 Storage</button>
+            <button class="filter-btn" data-filter="testing">🧪 Testing</button>
+            <button class="filter-btn" data-filter="practices">📋 Best Practices</button>
+            <button class="filter-btn" data-filter="devtools">🛠️ Dev Tools</button>
+        </div>
+    </section>
+
+    <!-- ===== TOPIC GRID ===== -->
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="topic-grid">
+            <!-- Cards rendered by JS -->
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="hidden text-center py-16">
+            <div class="text-5xl mb-4">🔍</div>
+            <h3 class="font-serif text-xl text-gray-600 mb-2">No topics found</h3>
+            <p class="text-gray-400">Try a different search term or clear your filters.</p>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-tru-primary text-white/70 py-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-sm">
+                <span class="text-white font-semibold">COMP 2160</span> — Mobile Application Development · Thompson
+                Rivers University
+            </div>
+            <div class="text-sm">
+                This Website is created by <span class="font-semibold">Research Coaches</span> for guidance.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // Topic Data
+        const topics = [
+            {
+                id: 1,
+                title: "Layout Performance Comparison: ConstraintLayout vs. LinearLayout",
+                description: "Investigate when to use ConstraintLayout versus LinearLayout by comparing performance metrics, nesting depth, and UI complexity.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            },
+            {
+                id: 2,
+                title: "RecyclerView vs. ListView: Modern Android List Implementation",
+                description: "Research the evolution from ListView to RecyclerView, comparing memory efficiency, the ViewHolder pattern, and performance with large datasets.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            },
+            {
+                id: 3,
+                title: "Fragment Lifecycle Management and Memory Leaks",
+                description: "Investigate common memory leak scenarios in Fragment usage, proper lifecycle handling, and best practices for fragment transactions.",
+                category: "architecture",
+                badge: "Architecture",
+                badgeClass: "badge-architecture",
+                available: true
+            },
+            {
+                id: 4,
+                title: "Intent Security: Explicit vs. Implicit Intents",
+                description: "Research security implications of different Intent types, potential vulnerabilities, and best practices for safe inter-app communication.",
+                category: "security",
+                badge: "Security",
+                badgeClass: "badge-security",
+                available: true
+            },
+            {
+                id: 5,
+                title: "Background Services vs. Foreground Services: Battery Impact Study",
+                description: "Investigate battery consumption differences between background and foreground services, including Android's background execution limits.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            },
+            {
+                id: 6,
+                title: "SharedPreferences vs. Room Database: Data Persistence Study",
+                description: "Compare simple key-value storage with relational databases, analyzing performance benchmarks and data structure complexity.",
+                category: "storage",
+                badge: "Storage",
+                badgeClass: "badge-storage",
+                available: true
+            },
+            {
+                id: 7,
+                title: "Material Design 3 (Material You) Implementation Guide",
+                description: "Research the shift to Material Design 3, focusing on dynamic color palettes, expressive components, and updated UX guidelines.",
+                category: "ux",
+                badge: "UX & Design",
+                badgeClass: "badge-ux",
+                available: true
+            },
+            {
+                id: 8,
+                title: "Accessibility in Android Apps: Inclusive Design Audit",
+                description: "Research accessibility standards, using tools like TalkBack and Accessibility Scanner to perform comprehensive app audits.",
+                category: "ux",
+                badge: "UX & Design",
+                badgeClass: "badge-ux",
+                available: true
+            },
+            {
+                id: 9,
+                title: "Network Request Libraries: Volley vs. Retrofit",
+                description: "Compare networking performance between Volley and Retrofit, looking at caching, concurrency, and developer efficiency.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            },
+            {
+                id: 10,
+                title: "Single Activity vs. Multi Activity Architecture",
+                description: "Research modern navigation patterns, comparing the resource impact of activities vs. fragments in large-scale applications.",
+                category: "architecture",
+                badge: "Architecture",
+                badgeClass: "badge-architecture",
+                available: true
+            },
+            {
+                id: 11,
+                title: "Permissions Model Evolution: Privacy vs. User Friction",
+                description: "Map the shift from install-time to runtime permissions, researching how trust and transparency impact user 'Allow' rates.",
+                category: "security",
+                badge: "Security",
+                badgeClass: "badge-security",
+                available: true
+            },
+            {
+                id: 12,
+                title: "Dark Mode Support: Usability and Battery Impact",
+                description: "Research the benefits of dark mode, including accessibility, readability, and battery usage on OLED vs. LCD screens.",
+                category: "ux",
+                badge: "UX & Design",
+                badgeClass: "badge-ux",
+                available: true
+            },
+            {
+                id: 13,
+                title: "Image Loading Libraries: Glide vs. Picasso Performance",
+                description: "Measure RAM usage and caching efficiency when loading high-res images, comparing the two industry-standard libraries.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            },
+            {
+                id: 14,
+                title: "Emulator vs. Physical Device Testing Fidelity",
+                description: "Compare hardware sensor accuracy and performance metrics between emulated environments and real Android hardware.",
+                category: "testing",
+                badge: "Testing",
+                badgeClass: "badge-testing",
+                available: true
+            },
+            {
+                id: 15,
+                title: "Log.d vs. Toast: Strategic Debugging Methodology",
+                description: "Research the trade-offs between internal developer visibility and user-facing feedback during application testing.",
+                category: "devtools",
+                badge: "Dev Tools",
+                badgeClass: "badge-devtools",
+                available: true
+            },
+            {
+                id: 16,
+                title: "Styles and Themes vs. Inline Styling Maintainability",
+                description: "Analyze code scalability and design consistency by comparing centralized themes against ad-hoc inline XML styling.",
+                category: "practices",
+                badge: "Best Practices",
+                badgeClass: "badge-practices",
+                available: true
+            },
+            {
+                id: 17,
+                title: "Activity Lifecycle Awareness: Rotation Effects",
+                description: "Test app behavior during screen rotation and backgrounding. Learn proper lifecycle handling to prevent data loss.",
+                category: "architecture",
+                badge: "Architecture",
+                badgeClass: "badge-architecture",
+                available: true
+            },
+            {
+                id: 18,
+                title: "Image Size Optimization: Large Images vs. Optimized Assets",
+                description: "Examine APK size, load times, and memory pressure when using raw images versus optimized assets like WebP.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            },
+            {
+                id: 19,
+                title: "Compilation Patterns: AOT vs. JIT in Android",
+                description: "Research the difference between Ahead-of-Time and Just-in-Time compilation in the ART runtime environment.",
+                category: "performance",
+                badge: "Performance",
+                badgeClass: "badge-performance",
+                available: true
+            }
+        ];
+
+        // Render
+        const grid = document.getElementById('topic-grid');
+        const noResults = document.getElementById('no-results');
+        const searchInput = document.getElementById('search-input');
+        let activeFilter = 'all';
+
+        function renderCards(filteredTopics) {
+            grid.innerHTML = '';
+            if (filteredTopics.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            }
+            noResults.classList.add('hidden');
+
+            filteredTopics.forEach((t, i) => {
+                const card = document.createElement('a');
+                card.href = t.available ? `topics/topic-${t.id}.html` : '#';
+                card.className = `topic-card animate-in ${!t.available ? 'opacity-60 cursor-default' : ''}`;
+                card.style.animationDelay = `${i * 0.05}s`;
+                if (!t.available) {
+                    card.addEventListener('click', e => e.preventDefault());
+                }
+
+                card.innerHTML = `
+          <div class="flex items-start justify-between mb-4">
+            <span class="topic-number">${t.id}</span>
+            <span class="category-badge ${t.badgeClass}">${t.badge}</span>
+          </div>
+          <h3 class="font-serif text-lg leading-snug mb-3 flex-grow" style="color: var(--text-primary);">${t.title}</h3>
+          <p class="text-sm leading-relaxed mb-4" style="color: var(--text-secondary);">${t.description}</p>
+          <div class="mt-auto pt-3 border-t" style="border-color: var(--surface-alt);">
+            ${t.available
+                        ? '<span class="text-sm font-semibold" style="color: var(--tru-secondary);">Explore Methodology →</span>'
+                        : '<span class="text-sm font-medium" style="color: var(--text-muted);">Coming Soon</span>'
+                    }
+          </div>
+        `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterTopics() {
+            const query = searchInput.value.toLowerCase().trim();
+            const filtered = topics.filter(t => {
+                const matchCategory = activeFilter === 'all' || t.category === activeFilter;
+                const matchSearch = !query ||
+                    t.title.toLowerCase().includes(query) ||
+                    t.description.toLowerCase().includes(query) ||
+                    t.badge.toLowerCase().includes(query);
+                return matchCategory && matchSearch;
+            });
+            renderCards(filtered);
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', filterTopics);
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                filterTopics();
+            });
+        });
+
+        // Initial render
+        renderCards(topics);
+    </script>
+</body>
+
+</html>
