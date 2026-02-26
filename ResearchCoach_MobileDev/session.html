@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMP 2160 · Research Coaching Session — Section 02</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --tru-deep:    #002230;
+      --tru-navy:    #003C5C;
+      --tru-teal:    #00594C;
+      --tru-teal-l:  #007A68;
+      --tru-teal-xl: #00A589;
+      --tru-gold:    #E8963E;
+      --tru-gold-l:  #FABA7A;
+      --white:       #FFFFFF;
+      --off-white:   #EEF4F2;
+      --muted:       rgba(255,255,255,0.45);
+      --glass-bg:    rgba(255,255,255,0.06);
+      --glass-br:    rgba(255,255,255,0.12);
+    }
+
+    html, body {
+      width: 100%; height: 100vh;
+      overflow: hidden;
+      background: #FFFFFF;
+      color: var(--tru-deep);
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* ── Background mesh ─────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 0% 0%,   rgba(0,89,76,0.05)  0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 100% 100%, rgba(0,60,92,0.04)   0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 60% 10%,  rgba(0,165,137,0.02) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* fine noise grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    /* ── Layout ──────────────────────────────────────────── */
+    .page {
+      position: relative; z-index: 2;
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 0;
+      padding: 0;
+    }
+
+    /* ── Top Bar ─────────────────────────────────────────── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px 16px;
+      border-bottom: 1px solid rgba(0,60,92,0.08);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .tru-logo-mark {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--tru-teal), var(--tru-teal-xl));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700; font-size: 20px;
+      color: white; letter-spacing: -0.5px;
+      box-shadow: 0 0 24px rgba(0,165,137,0.3);
+      flex-shrink: 0;
+    }
+
+    .tru-meta {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+
+    .tru-meta-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tru-gold-l);
+    }
+
+    .tru-meta-course {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 400;
+      color: rgba(0,60,92,0.8);
+      letter-spacing: 0.02em;
+    }
+
+    .topbar-center {
+      text-align: center;
+    }
+
+    .session-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--tru-teal-xl);
+      margin-bottom: 3px;
+    }
+
+    .session-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px; font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--tru-deep);
+      line-height: 1;
+    }
+
+    .session-title em {
+      font-style: italic;
+      color: var(--tru-gold-l);
+    }
+
+    .topbar-right {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 3px;
+    }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: rgba(232,150,62,0.15);
+      border: 1px solid rgba(232,150,62,0.3);
+      border-radius: 20px;
+      color: var(--tru-gold-l);
+      font-family: 'Syne', sans-serif;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+    }
+
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--tru-gold);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .topbar-date {
+      font-size: 12px; color: rgba(0,60,92,0.65);
+      font-weight: 400; letter-spacing: 0.04em;
+    }
+
+    /* ── Body ────────────────────────────────────────────── */
+    .body {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    /* ── Left Panel ──────────────────────────────────────── */
+    .left-panel {
+      padding: 32px 28px 28px 48px;
+      border-right: 1px solid rgba(0,60,92,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow: hidden;
+      background: #FFFFFF;
+    }
+
+    .panel-eyebrow {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--tru-teal-xl);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .panel-eyebrow::before {
+      content: '';
+      width: 18px; height: 1.5px;
+      background: var(--tru-teal-xl);
+      flex-shrink: 0;
+    }
+
+    .panel-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 44px; font-weight: 600;
+      line-height: 1.05; letter-spacing: -0.02em;
+      color: var(--tru-deep);
+    }
+
+    .panel-heading em {
+      font-style: italic;
+      color: var(--tru-teal-xl);
+    }
+
+    .panel-sub {
+      font-size: 12px; font-weight: 300;
+      color: rgba(0,60,92,0.5);
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+    }
+
+    /* Instructions */
+    .instructions-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(0,60,92,0.55);
+      margin-top: 4px;
+    }
+
+    .instruction-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .instr-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      background: rgba(0,165,137,0.04);
+      border: 1px solid rgba(0,165,137,0.15);
+      border-radius: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .instr-card:hover { border-color: rgba(0,165,137,0.3); }
+
+    .instr-num {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--tru-teal), var(--tru-teal-l));
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 800;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,89,76,0.4);
+    }
+
+    .instr-num.gold {
+      background: linear-gradient(135deg, #c97b2a, var(--tru-gold));
+      box-shadow: 0 4px 12px rgba(232,150,62,0.3);
+    }
+
+    .instr-num.navy {
+      background: linear-gradient(135deg, #003C5C, #005E8E);
+      box-shadow: 0 4px 12px rgba(0,60,92,0.5);
+    }
+
+    .instr-text { flex: 1; }
+
+    .instr-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 700;
+      color: var(--tru-deep); margin-bottom: 3px;
+      letter-spacing: 0.01em;
+    }
+
+    .instr-desc {
+      font-size: 12px; font-weight: 400;
+      color: rgba(0,60,92,0.75);
+      line-height: 1.55;
+    }
+
+    /* Coaches strip */
+    .coaches-strip {
+      padding: 12px 14px;
+      background: rgba(0,89,76,0.08);
+      border: 1px solid rgba(0,89,76,0.16);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .coaches-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--tru-teal-xl);
+      white-space: nowrap;
+    }
+
+    .coach-pills {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    .coach-pill {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 10px 4px 6px;
+      border-radius: 20px;
+      font-size: 11px; font-weight: 500;
+    }
+
+    .coach-pill.pooja {
+      background: rgba(232,150,62,0.1);
+      border: 1px solid rgba(232,150,62,0.2);
+      color: #B8681F;
+    }
+
+    .coach-pill.gursahib {
+      background: rgba(0,165,137,0.1);
+      border: 1px solid rgba(0,165,137,0.2);
+      color: var(--tru-teal);
+    }
+
+    .coach-avatar {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: currentColor;
+      opacity: 0.25;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 800;
+      color: currentColor;
+      flex-shrink: 0;
+    }
+
+    .coach-initials {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 8px; font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .coach-initials.p { background: rgba(232,150,62,0.25); color: var(--tru-gold); }
+    .coach-initials.g { background: rgba(0,165,137,0.25); color: var(--tru-teal-xl); }
+
+    /* ── Right Panel: Table ──────────────────────────────── */
+    .right-panel {
+      padding: 28px 48px 24px 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #FFFFFF;
+    }
+
+    .table-header-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .table-eyebrow {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--tru-teal);
+    }
+
+    .table-count {
+      font-size: 13px; color: rgba(0,60,92,0.6);
+      font-weight: 400;
+    }
+
+    .table-wrapper {
+      flex: 1;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid rgba(0,60,92,0.12);
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(8px);
+      display: flex; flex-direction: column;
+    }
+
+    .tbl-head {
+      display: grid;
+      grid-template-columns: 56px 1.4fr 2.6fr 110px 110px;
+      padding: 12px 20px;
+      background: rgba(0,89,76,0.08);
+      border-bottom: 1px solid rgba(0,60,92,0.08);
+      gap: 12px;
+    }
+
+    .tbl-head-cell {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(0,60,92,0.65);
+    }
+
+    .tbl-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    .tbl-row {
+      display: grid;
+      grid-template-columns: 56px 1.4fr 2.6fr 110px 110px;
+      align-items: center;
+      padding: 0 20px;
+      gap: 12px;
+      border-bottom: 1px solid rgba(0,60,92,0.06);
+      transition: background 0.2s;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .tbl-row:last-child { border-bottom: none; }
+
+    .tbl-row:hover {
+      background: rgba(0,165,137,0.05);
+    }
+
+    .tbl-row.highlight-pooja {
+      border-left: 2.5px solid rgba(232,150,62,0.5);
+    }
+
+    .tbl-row.highlight-gursahib {
+      border-left: 2.5px solid rgba(0,165,137,0.5);
+    }
+
+    /* Group number */
+    .grp-num {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--tru-deep);
+      background: rgba(0,89,76,0.06);
+      border: 1px solid rgba(0,89,76,0.15);
+    }
+
+    /* Members */
+    .members-cell { overflow: hidden; }
+
+    .lead-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: var(--tru-deep);
+      display: flex; align-items: center; gap-6px;
+      gap: 6px;
+      margin-bottom: 3px;
+    }
+
+    .lead-tag {
+      font-size: 8.5px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: rgba(0,89,76,0.15);
+      color: var(--tru-teal);
+    }
+
+    .other-members {
+      font-size: 12px; font-weight: 400;
+      color: rgba(0,60,92,0.65);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* Topic */
+    .topic-cell { overflow: hidden; }
+
+    .topic-text {
+      font-size: 13px; font-weight: 400;
+      color: rgba(0,60,92,0.85);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Time */
+    .time-cell {
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .time-icon {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--tru-teal-xl); flex-shrink: 0;
+      opacity: 0.6;
+    }
+
+    .time-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 600;
+      color: rgba(0,60,92,0.8);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* Coach */
+    .coach-cell {
+      display: flex; align-items: center; gap: 7px;
+    }
+
+    .coach-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 12px 5px 8px;
+      border-radius: 20px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 700;
+    }
+
+    .coach-badge.pooja {
+      background: rgba(232,150,62,0.1);
+      border: 1px solid rgba(232,150,62,0.2);
+      color: #B8681F;
+    }
+
+    .coach-badge.gursahib {
+      background: rgba(0,165,137,0.1);
+      border: 1px solid rgba(0,165,137,0.2);
+      color: var(--tru-teal);
+    }
+
+    .badge-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+
+    .coach-badge.pooja .badge-dot    { background: var(--tru-gold); }
+    .coach-badge.gursahib .badge-dot { background: var(--tru-teal-xl); }
+
+    /* ── Bottom bar ──────────────────────────────────────── */
+    .bottom-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px;
+      padding: 8px 48px;
+      border-top: 1px solid rgba(0,60,92,0.07);
+      background: rgba(255,255,255,0.95);
+      position: relative; z-index: 2;
+    }
+
+    .bottom-bar-text {
+      font-size: 11px; font-weight: 400;
+      color: rgba(0,60,92,0.45);
+      letter-spacing: 0.06em;
+    }
+
+    .bottom-bar-sep { color: rgba(0,60,92,0.12); }
+
+    /* ── Entrance animation ──────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tbl-row { opacity: 0; animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .tbl-row:nth-child(1) { animation-delay: 0.15s; }
+    .tbl-row:nth-child(2) { animation-delay: 0.22s; }
+    .tbl-row:nth-child(3) { animation-delay: 0.29s; }
+    .tbl-row:nth-child(4) { animation-delay: 0.36s; }
+    .tbl-row:nth-child(5) { animation-delay: 0.43s; }
+    .tbl-row:nth-child(6) { animation-delay: 0.50s; }
+    .tbl-row:nth-child(7) { animation-delay: 0.57s; }
+    .tbl-row:nth-child(8) { animation-delay: 0.64s; }
+
+    .instr-card { opacity: 0; animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .instr-card:nth-child(1) { animation-delay: 0.1s; }
+    .instr-card:nth-child(2) { animation-delay: 0.18s; }
+    .instr-card:nth-child(3) { animation-delay: 0.26s; }
+    .instr-card:nth-child(4) { animation-delay: 0.34s; }
+
+    .topbar, .bottom-bar { opacity: 0; animation: fadeUp 0.5s ease forwards; animation-delay: 0.05s; }
+    .left-panel > * { opacity: 0; animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .left-panel > *:nth-child(1) { animation-delay: 0.08s; }
+    .left-panel > *:nth-child(2) { animation-delay: 0.12s; }
+    .left-panel > *:nth-child(3) { animation-delay: 0.16s; }
+    .left-panel > *:nth-child(4) { animation-delay: 0.20s; }
+    .left-panel > *:nth-child(5) { animation-delay: 0.25s; }
+    .left-panel > *:nth-child(6) { animation-delay: 0.30s; }
+
+    /* override: instr-card inside left-panel needs its own delay */
+    .instruction-cards .instr-card { animation-delay: unset; }
+    .instruction-cards .instr-card:nth-child(1) { animation-delay: 0.28s; }
+    .instruction-cards .instr-card:nth-child(2) { animation-delay: 0.36s; }
+    .instruction-cards .instr-card:nth-child(3) { animation-delay: 0.44s; }
+    .instruction-cards .instr-card:nth-child(4) { animation-delay: 0.52s; }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- ── Top Bar ─────────────────────────────── -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="tru-logo-mark">TRU</div>
+        <div class="tru-meta">
+          <span class="tru-meta-name">Thompson Rivers University</span>
+          <span class="tru-meta-course">COMP 2160 — Mobile Application Development &nbsp;·&nbsp; Section 02</span>
+        </div>
+      </div>
+      <div class="topbar-center">
+        <div class="session-label">Today's Event</div>
+        <div class="session-title">Research Coaching <em>Sessions</em></div>
+      </div>
+      <div class="topbar-right">
+        <div class="live-badge"><span class="live-dot"></span>Live Session · Winter 2026</div>
+        <div class="topbar-date">February 26, 2026</div>
+      </div>
+    </header>
+
+    <!-- ── Main Body ───────────────────────────── -->
+    <div class="body">
+
+      <!-- Left Panel: Instructions -->
+      <aside class="left-panel">
+        <div class="panel-eyebrow">Before We Begin</div>
+
+        <div>
+          <div class="panel-heading">Prepare<br>for your<br><em>Session</em></div>
+        </div>
+
+        <div class="instructions-heading">What to Have Ready</div>
+
+        <div class="instruction-cards">
+          <div class="instr-card">
+            <div class="instr-num">1</div>
+            <div class="instr-text">
+              <div class="instr-title">Your Poster Template</div>
+              <div class="instr-desc">Open the TRU research poster template (36×24 landscape) on your laptop, ready to share your current progress and layout structure.</div>
+            </div>
+          </div>
+          <div class="instr-card">
+            <div class="instr-num gold">2</div>
+            <div class="instr-text">
+              <div class="instr-title">Proposed Methodology</div>
+              <div class="instr-desc">Be ready to briefly describe your approach — how you plan to measure, compare, or evaluate your research question. Bullet points are fine.</div>
+            </div>
+          </div>
+          <div class="instr-card">
+            <div class="instr-num navy">3</div>
+            <div class="instr-text">
+              <div class="instr-title">Annotated Bibliography</div>
+              <div class="instr-desc">Have your list of 10 scholarly sources open. Your coach will do a quick review to help validate relevance and academic credibility.</div>
+            </div>
+          </div>
+          <div class="instr-card">
+            <div class="instr-num">4</div>
+            <div class="instr-text">
+              <div class="instr-title">Your Refined Research Question</div>
+              <div class="instr-desc">Come prepared to state your niche research question clearly in one or two sentences and explain what makes it specific and measurable.</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Panel: Schedule Table -->
+      <section class="right-panel">
+        <div class="table-header-row">
+          <div class="table-eyebrow">Section 02 · Session Schedule</div>
+          <div class="table-count">8 groups · 45-minute block</div>
+        </div>
+
+        <div class="table-wrapper">
+          <!-- Table Head -->
+          <div class="tbl-head">
+            <div class="tbl-head-cell">Group</div>
+            <div class="tbl-head-cell">Team Lead &amp; Members</div>
+            <div class="tbl-head-cell">Research Topic</div>
+            <div class="tbl-head-cell">Time Slot</div>
+            <div class="tbl-head-cell">Coach</div>
+          </div>
+
+          <!-- Table Body -->
+          <div class="tbl-body">
+
+            <div class="tbl-row highlight-pooja">
+              <div class="grp-num">1</div>
+              <div class="members-cell">
+                <div class="lead-name">Divyansh <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Maria · Sundus · Oesin</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">3D Graphics Support in Native Android Development</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">10:35 – 10:50</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge pooja">
+                  <span class="badge-dot"></span>Pooja
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-pooja">
+              <div class="grp-num">2</div>
+              <div class="members-cell">
+                <div class="lead-name">Suyog <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Argo · Smriti · Jashan</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">Emulator vs. Physical Device Testing: Reliability of Results</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">10:50 – 11:05</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge pooja">
+                  <span class="badge-dot"></span>Pooja
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-pooja">
+              <div class="grp-num">3</div>
+              <div class="members-cell">
+                <div class="lead-name">Sumaiya <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Jubair · Mikael · Isaac</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">Dark Mode Support: Usability &amp; Battery Impact on OLED vs. LCD</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">11:05 – 11:20</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge pooja">
+                  <span class="badge-dot"></span>Pooja
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-gursahib">
+              <div class="grp-num">4</div>
+              <div class="members-cell">
+                <div class="lead-name">Tayler <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Panashe · Don · Ryan</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">Intent Security: Explicit vs. Implicit Intent Vulnerabilities</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">10:35 – 10:44</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge gursahib">
+                  <span class="badge-dot"></span>Gursahib
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-gursahib">
+              <div class="grp-num">5</div>
+              <div class="members-cell">
+                <div class="lead-name">Reinhard <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Leif · Yeokyung · Aryan</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">RecyclerView vs. ListView: Modern Android List Implementation</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">10:44 – 10:53</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge gursahib">
+                  <span class="badge-dot"></span>Gursahib
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-gursahib">
+              <div class="grp-num">6</div>
+              <div class="members-cell">
+                <div class="lead-name">Ibrahim <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Pragyay · Omar</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">Material Design 3: Impact of 48dp Touch Guideline on Interaction Accuracy</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">10:53 – 11:02</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge gursahib">
+                  <span class="badge-dot"></span>Gursahib
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-gursahib">
+              <div class="grp-num">7</div>
+              <div class="members-cell">
+                <div class="lead-name">Rohit <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Dami · Sola</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">SharedPreferences vs. Room Database: Data Storage Decision Making</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">11:02 – 11:11</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge gursahib">
+                  <span class="badge-dot"></span>Gursahib
+                </div>
+              </div>
+            </div>
+
+            <div class="tbl-row highlight-gursahib">
+              <div class="grp-num">8</div>
+              <div class="members-cell">
+                <div class="lead-name">Kyler <span class="lead-tag">Lead</span></div>
+                <div class="other-members">Solo</div>
+              </div>
+              <div class="topic-cell">
+                <div class="topic-text">How Effectively Can Android Users Avoid Sharing Data with Advertisers?</div>
+              </div>
+              <div class="time-cell">
+                <span class="time-icon"></span>
+                <span class="time-text">11:11 – 11:20</span>
+              </div>
+              <div class="coach-cell">
+                <div class="coach-badge gursahib">
+                  <span class="badge-dot"></span>Gursahib
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /tbl-body -->
+        </div><!-- /table-wrapper -->
+      </section>
+
+    </div><!-- /body -->
+
+    <!-- ── Bottom Bar ──────────────────────────── -->
+    <footer class="bottom-bar">
+      <span class="bottom-bar-text">Thompson Rivers University</span>
+      <span class="bottom-bar-sep">·</span>
+      <span class="bottom-bar-text">COMP 2160 Mobile Application Development</span>
+      <span class="bottom-bar-sep">·</span>
+      <span class="bottom-bar-text">Research Coaching Initiative &nbsp;©&nbsp; Winter 2026</span>
+    </footer>
+
+  </div>
+</body>
+</html>
