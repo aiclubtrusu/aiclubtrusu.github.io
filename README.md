@@ -4,3 +4,4 @@ https://aiclubtrusu.github.io/ResearchCoach_MobileDev/index.html
 ### Assignment Feedback
 https://aiclubtrusu.github.io/ResearchCoach_MobileDev/assignment.html
 
+https://aiclubtrusu.github.io/ResearchCoach_MobileDev/session.html
