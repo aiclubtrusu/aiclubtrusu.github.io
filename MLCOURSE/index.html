@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Learning Hub — Master Machine Learning</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="logo-area">
+            <h1>ML Hub</h1>
+            <p>Coursework Dashboard</p>
+        </div>
+
+        <nav class="nav-links">
+            <div class="nav-item">
+                <button class="tab-button active" data-tab="tab1">
+                    <span>🏠</span> <span>Home & Lessons</span>
+                </button>
+            </div>
+            <div class="nav-item">
+                <button class="tab-button" data-tab="tab2">
+                    <span>📝</span> <span>Assignments Review</span>
+                </button>
+            </div>
+            <div class="nav-item">
+                <button class="tab-button" data-tab="tab3">
+                    <span>📊</span> <span>Datasets & Progress</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p style="font-size: 0.7rem; color: var(--text-muted);">© 2026 ML Learning Hub</p>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- TAB 1: Home & Lessons -->
+        <section class="tab-content active" id="tab1">
+            <div class="hero">
+                <h2>Welcome to ML Learning Hub</h2>
+                <p>Access the best resources for your Machine Learning coursework. Learn, practice, and apply concepts
+                    with curated datasets and interactive lessons.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon">📚</div>
+                    <div class="value">12</div>
+                    <div class="label">Course Modules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">💾</div>
+                    <div class="value">450MB</div>
+                    <div class="label">Training Data</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">🏆</div>
+                    <div class="value">88%</div>
+                    <div class="label">Course Progress</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📖 About This Course</h2>
+                <div class="course-description">
+                    <p>This Machine Learning coursework is designed to provide you with a deep dive into the algorithmic foundations that power modern artificial intelligence. We begin by exploring the mathematical underpinnings of linear algebra and calculus, essential for understanding loss functions and optimization techniques like Gradient Descent. As we progress, you will engage with core concepts such as bias-variance tradeoff, overfitting, and regularization methods like L1 and L2 to build more robust models that generalize well to unseen data.</p>
+                    
+                    <p>The curriculum covers a broad spectrum of supervised learning techniques, starting from simple linear and logistic regression and scaling up to complex ensemble methods like Random Forests and Gradient Boosted Trees (XGBoost/LightGBM). You will learn not just how to implement these algorithms using industry-standard libraries like Scikit-Learn, but also the "why" behind their performance in different data scenarios. Each module is accompanied by rigorous theoretical discussions to ensure a holistic understanding of the field.</p>
+                    
+                    <p>Unsupervised learning occupies a significant portion of our study, where we delve into clustering algorithms like K-Means and DBSCAN, as well as dimensionality reduction techniques including Principal Component Analysis (PCA) and t-SNE. Understanding the structure of data without explicit labels is a critical skill for any aspiring data scientist, and this course provides the tools necessary to uncover latent patterns in high-dimensional feature spaces.</p>
+                    
+                    <p>In the latter half of the course, we pivot towards Neural Networks and Deep Learning. We start with the architecture of a Perceptron and gradually build up to Multi-Layer Perceptrons (MLPs), exploring backpropagation and various activation functions like ReLU and Softmax. You will gain hands-on experience with frameworks such as TensorFlow or PyTorch, learning how to design and train architectures for computer vision and natural language processing tasks.</p>
+                    
+                    <p>Beyond model building, we emphasize the importance of data ethics and responsible AI. We discuss the implications of algorithmic bias, data privacy, and the socio-economic impacts of automated decision-making systems. This course aims to produce not just technically proficient engineers, but ethical practitioners who are conscious of the broader impact of their work on society and individual lives.</p>
+                    
+                    <p>Finally, we conclude with model deployment and MLOps. Understanding how to wrap a model in an API, containerize it using Docker, and monitor its performance in a production environment is what separates a researcher from a ML engineer. This comprehensive approach ensures that by the end of the course, you are fully equipped to tackle real-world challenges from data ingestion to model maintenance.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Your feedback for us</h3>
+                <textarea id="notesInput" class="feedback-box"></textarea>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button id="saveNotesBtn" class="btn btn-primary">Submit feedback</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Upload resume to learn more</h3>
+                <div class="upload-wrapper">
+                    <input type="file" id="csvFileInput" accept=".csv" class="file-input">
+                    <label for="csvFileInput" class="file-label">upload resume</label>
+                    <button id="uploadCsvBtn" class="btn btn-secondary">Give resume</button>
+                </div>
+            </div>
+
+            <div id="uploadStatus" class="status-message"></div>
+        </section>
+
+        <!-- TAB 2: Assignments Review -->
+        <section class="tab-content" id="tab2">
+            <div class="card" style="padding: 0;">
+                <div style="padding: 2rem; border-bottom: 1px solid var(--border);">
+                    <h2>📝 Learn about Machine Learning concepts in detail</h2>
+                    <p style="color: var(--text-muted);">Review your latest markdown entries and coursework submissions
+                        below.</p>
+                </div>
+
+                <div id="markdownDisplay" class="markdown-content">
+                    <div class="markdown-view">
+                        <p class="placeholder">No assignment submitted yet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Datasets & Progress -->
+        <section class="tab-content" id="tab3">
+            <div class="card">
+                <h2>📊 Dataset Library</h2>
+                <div id="csvFilesList" class="files-list">
+                    <p class="placeholder">No datasets found in the library.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📝 Lesson Notes Log</h2>
+                <div id="notesList" class="notes-list">
+                    <p class="placeholder">No notes saved yet.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📄 All Course Submissions</h2>
+                <div id="submissionsList" class="notes-list">
+                    <p class="placeholder">No submissions found.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📤 New Assignment Submission</h3>
+                <textarea id="submissionMarkdownInput"
+                    placeholder="Paste your markdown content here... (e.g. your project report or assignment solution)"></textarea>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button id="submitMarkdownBtn" class="btn btn-primary">Submit for Review</button>
+                </div>
+                <div id="submissionStatus" class="status-message"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4"></script>
+
+    <script src="js/supabase-config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
